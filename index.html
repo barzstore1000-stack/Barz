@@ -1,0 +1,773 @@
+<!DOCTYPE html>
+<html lang="ku" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>پەروکێت بارز</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Kufi+Arabic:wght@500;700;800&family=Noto+Naskh+Arabic:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#F6EEF1; --surface:#FFFFFF; --ink:#2B1624; --muted:#7A5E6E;
+  --plum:#4A1D3A; --plum-2:#6B2C55; --gold:#B8903A; --gold-soft:#EAD9AE;
+  --line:#E4D3DB; --ok:#2E7D5B; --warn:#B7791F; --bad:#B23A48; --blue:#3A6EA5; --busy:#F1D6E2;
+  --radius-lg:18px; --radius-sm:10px;
+  box-sizing:border-box;
+  padding-top:env(safe-area-inset-top,0px); padding-bottom:env(safe-area-inset-bottom,0px);
+}
+@media (prefers-color-scheme:dark){
+  :root{ --bg:#1C1018; --surface:#2A1823; --ink:#F4E7EE; --muted:#C2A5B5;
+    --plum:#E7B8D6; --plum-2:#D59BC0; --gold:#DDB65E; --gold-soft:#4A3A1F; --line:#43293A; --busy:#4A2A3D; }
+}
+*,*::before,*::after{box-sizing:inherit}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:"Noto Naskh Arabic","Segoe UI",Tahoma,sans-serif;font-size:17px;line-height:1.75}
+h1,h2,h3,.btn,.chip,.tab,.seg button,nav a{font-family:"Noto Kufi Arabic","Noto Naskh Arabic",Tahoma,sans-serif}
+img{max-width:100%;display:block}
+button{font:inherit;cursor:pointer}
+a{color:var(--plum-2)}
+:focus-visible{outline:3px solid var(--gold);outline-offset:2px}
+.wrap{max-width:1120px;margin:0 auto;padding:0 18px}
+
+nav.top{display:flex;justify-content:space-between;align-items:center;padding:12px 18px;max-width:1120px;margin:0 auto;gap:10px;flex-wrap:wrap}
+nav.top .brand{font-weight:800;color:var(--plum);text-decoration:none;font-size:18px}
+nav.top .links{display:flex;gap:14px;font-size:14px;flex-wrap:wrap}
+nav.top .links a{text-decoration:none;color:var(--muted)}
+.hero{padding:22px 0 0;text-align:center}
+.hero h1{margin:0;font-size:clamp(30px,7vw,52px);font-weight:800;color:var(--plum);letter-spacing:-.5px}
+.hero p{margin:4px auto 0;color:var(--muted);max-width:50ch}
+.band{height:30px;margin:22px 0 0;background-repeat:repeat-x;background-size:60px 30px;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='60' height='30' viewBox='0 0 60 30'%3E%3Cg fill='none' stroke='%23B8903A' stroke-width='2'%3E%3Cpath d='M0 15 L15 3 L30 15 L15 27 Z'/%3E%3Cpath d='M30 15 L45 3 L60 15 L45 27 Z'/%3E%3Cpath d='M9 15 L15 10 L21 15 L15 20 Z' fill='%23B8903A'/%3E%3Cpath d='M39 15 L45 10 L51 15 L45 20 Z' fill='%23B8903A'/%3E%3C/g%3E%3C/svg%3E")}
+
+.bar{display:flex;flex-wrap:wrap;gap:10px;align-items:center;justify-content:space-between;padding:18px 0}
+.chips{display:flex;gap:8px;overflow-x:auto;padding-bottom:4px;max-width:100%}
+.chip{border:1px solid var(--line);background:var(--surface);color:var(--ink);padding:7px 14px;border-radius:999px;font-size:14px;white-space:nowrap}
+.chip[aria-pressed="true"]{background:var(--plum);color:var(--bg);border-color:var(--plum)}
+.tabs{display:flex;gap:6px}
+.tab{background:none;border:none;border-bottom:2px solid transparent;color:var(--muted);padding:6px 4px;font-size:14px}
+.tab[aria-selected="true"]{color:var(--plum);border-color:var(--gold)}
+
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:18px;padding:18px 0 40px}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius-lg);overflow:hidden;text-align:right;padding:0;color:inherit;display:flex;flex-direction:column;text-decoration:none}
+.pic{aspect-ratio:3/4;background:linear-gradient(160deg,var(--gold-soft),var(--bg));display:grid;place-items:center;font-size:54px;position:relative}
+.pic img{width:100%;height:100%;object-fit:cover}
+.shopcard .pic{aspect-ratio:16/9;font-size:44px}
+.sold{position:absolute;inset:auto 0 0 0;background:var(--plum);color:var(--bg);text-align:center;font-size:14px;padding:4px}
+.card .body{padding:12px 14px 14px}
+.card h3{margin:0;font-size:16px}
+.meta{color:var(--muted);font-size:14px}
+.fit{font-size:13px;background:var(--bg);border-radius:8px;padding:4px 8px;margin-top:6px;display:inline-block}
+.prices{display:flex;gap:12px;margin-top:6px;font-size:14px;flex-wrap:wrap}
+.prices b{color:var(--gold)}
+.empty{text-align:center;color:var(--muted);padding:50px 10px}
+
+.btn{border:none;border-radius:var(--radius-sm);padding:10px 18px;font-size:15px;font-weight:700;text-decoration:none;display:inline-block}
+.btn-main{background:var(--plum);color:var(--bg)}
+.btn-gold{background:var(--gold);color:#fff}
+.btn-ghost{background:transparent;border:1px solid var(--line);color:var(--ink)}
+.btn-bad{background:transparent;border:1px solid var(--bad);color:var(--bad)}
+.btn-sm{padding:4px 10px;font-size:13px}
+.btn-block{width:100%;padding:14px}
+.btn:disabled{opacity:.5;cursor:not-allowed}
+
+/* auth card */
+.auth{min-height:70vh;display:grid;place-items:center;padding:24px 0}
+.auth-card{background:var(--surface);border:1px solid var(--line);border-radius:28px;padding:36px 28px;width:min(440px,100%);box-shadow:0 20px 50px rgba(74,29,58,.08);text-align:center}
+.auth-card .lock{font-size:46px}
+.auth-card h2{margin:10px 0 4px;font-size:24px}
+.auth-card p.sub{color:var(--muted);margin:0 0 10px}
+.auth-card label{text-align:right}
+.auth-card .alt{margin-top:16px;font-size:14px;color:var(--muted)}
+
+dialog{border:none;border-radius:var(--radius-lg);padding:0;width:min(600px,95vw);max-height:92vh;background:var(--surface);color:var(--ink)}
+dialog::backdrop{background:rgba(30,10,25,.55)}
+.dlg{padding:22px;overflow:auto;max-height:92vh}
+.dlg h2{margin:0 0 4px;color:var(--plum);font-size:22px}
+.dlg h3{margin:18px 0 4px;font-size:16px;color:var(--plum)}
+.close{float:left;background:none;border:none;font-size:26px;color:var(--muted);line-height:1}
+label{display:block;font-size:14px;color:var(--muted);margin-top:12px}
+input,select,textarea{width:100%;font:inherit;font-size:16px;padding:10px 12px;border:1px solid var(--line);border-radius:var(--radius-sm);background:var(--bg);color:var(--ink);margin-top:4px}
+input[type=checkbox],input[type=radio]{width:auto;margin:0 0 0 6px;vertical-align:middle}
+.row{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.row3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px}
+.seg{display:flex;border:1px solid var(--line);border-radius:var(--radius-sm);overflow:hidden;margin-top:14px}
+.seg button{flex:1;border:none;background:var(--bg);color:var(--ink);padding:9px;font-size:14px}
+.seg button[aria-pressed="true"]{background:var(--plum);color:var(--bg)}
+.msg{margin-top:12px;font-size:15px;min-height:1.5em}
+.msg.bad{color:var(--bad)} .msg.ok{color:var(--ok)}
+.actions{display:flex;gap:10px;margin-top:18px;flex-wrap:wrap;align-items:center}
+.banner{background:var(--gold-soft);border-radius:12px;padding:10px 14px;margin:14px 0;font-size:15px}
+
+.cal{border:1px solid var(--line);border-radius:14px;padding:10px;margin-top:10px}
+.cal-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:6px}
+.cal-head b{font-family:"Noto Kufi Arabic",sans-serif;font-size:15px}
+.cal-head button{background:var(--bg);border:1px solid var(--line);border-radius:8px;width:34px;height:34px;color:var(--ink)}
+.cal-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:3px;text-align:center}
+.cal-grid .wd{font-size:12px;color:var(--muted)}
+.day{aspect-ratio:1;border-radius:8px;font-size:13px;display:flex;flex-direction:column;align-items:center;justify-content:center;line-height:1.1}
+.day.past{opacity:.35} .day.busy{background:var(--busy)}
+.day.pick{background:var(--blue);color:#fff} .day.wed{background:var(--gold);color:#fff} .day.ret{background:var(--ok);color:#fff}
+.day.today{outline:2px solid var(--plum)}
+.day i{font-style:normal;font-size:10px}
+.legend{display:flex;flex-wrap:wrap;gap:10px;font-size:12px;color:var(--muted);margin-top:8px}
+.legend span::before{content:"";display:inline-block;width:12px;height:12px;border-radius:3px;margin-left:4px;vertical-align:middle;background:var(--c)}
+.soldbox{background:var(--plum);color:var(--bg);border-radius:12px;padding:10px 14px;margin-top:12px;text-align:center}
+.paybox{background:var(--bg);border:1px dashed var(--gold);border-radius:12px;padding:10px 14px;margin-top:10px;font-size:15px}
+.paybox b{color:var(--gold)}
+
+section.panel{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius-lg);padding:18px;margin-bottom:24px}
+section.panel h2{margin:0 0 10px;font-size:19px;color:var(--plum)}
+.tbl{overflow-x:auto}
+table{border-collapse:collapse;width:100%;font-size:14px;min-width:820px}
+th,td{padding:8px;border-bottom:1px solid var(--line);text-align:right;vertical-align:top}
+th{color:var(--muted);font-weight:600}
+.st{display:inline-block;border-radius:6px;padding:0 8px;font-size:13px;color:#fff}
+.st-pending{background:var(--warn)} .st-confirmed{background:var(--plum-2)} .st-picked{background:var(--blue)}
+.st-returned,.st-sold{background:var(--ok)} .st-cancelled{background:#888}
+.paid{color:var(--ok);font-weight:700} .unpaid{color:var(--warn)}
+.hide{display:none!important}
+.note{font-size:13px;color:var(--muted)}
+.loading{text-align:center;color:var(--muted);padding:60px 0}
+@media (prefers-reduced-motion:no-preference){ dialog[open]{animation:pop .18s ease-out} @keyframes pop{from{transform:translateY(8px);opacity:0}} }
+@media (max-width:520px){ .row,.row3{grid-template-columns:1fr} .auth-card{padding:28px 18px} }
+</style>
+</head>
+<body>
+<nav class="top">
+  <a class="brand" href="#/">پەروکێت بارز</a>
+  <div class="links" id="navLinks"></div>
+</nav>
+<main id="app"><div class="loading">تێتە بارکرن…</div></main>
+
+<dialog id="itemDlg"><div class="dlg" id="itemBody"></div></dialog>
+<dialog id="editDlg"><div class="dlg">
+  <button class="close" data-close aria-label="داخستن">×</button>
+  <h2 id="editTitle">کراسەکێ نوو</h2>
+  <label>ناڤێ کراسی<input id="fName"></label>
+  <div class="row">
+    <label>بەش<select id="fCat"></select></label>
+    <label>رەنگ<input id="fColor"></label>
+  </div>
+  <div class="row">
+    <label>بەژن ژ (سم)<input id="fHMin" type="number" min="100" max="220" placeholder="155"></label>
+    <label>بەژن هەتا (سم)<input id="fHMax" type="number" min="100" max="220" placeholder="170"></label>
+  </div>
+  <div class="row">
+    <label>کێش ژ (کگم)<input id="fWMin" type="number" min="30" max="200" placeholder="50"></label>
+    <label>کێش هەتا (کگم)<input id="fWMax" type="number" min="30" max="200" placeholder="65"></label>
+  </div>
+  <label>وەسف<textarea id="fDesc" rows="2"></textarea></label>
+  <div class="row">
+    <label><input type="checkbox" id="fRent"> بۆ حجزێ (کرێ)</label>
+    <label><input type="checkbox" id="fSale"> بۆ فرۆتنێ</label>
+  </div>
+  <div class="row">
+    <label>بهایێ حجزێ (د.ع)<input id="fRentP" type="number" min="0" step="1000"></label>
+    <label>بهایێ فرۆتنێ (د.ع)<input id="fSaleP" type="number" min="0" step="1000"></label>
+  </div>
+  <label>وێنە<input id="fImg" type="file" accept="image/*"></label>
+  <div class="note" id="imgNote"></div>
+  <div class="msg" id="editMsg"></div>
+  <div class="actions"><button class="btn btn-main" id="saveItem">پاشەکەفتکرن</button><button class="btn btn-ghost" data-close>هەلوەشاندن</button></div>
+</div></dialog>
+
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+import { getAuth, onAuthStateChanged, signInAnonymously, signInWithEmailAndPassword,
+  createUserWithEmailAndPassword, signOut, sendPasswordResetEmail } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+import { getFirestore, doc, getDoc, setDoc, updateDoc, deleteDoc, collection, query, where,
+  onSnapshot, runTransaction, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+/* ===== ١. زانیاریێن پرۆژێ Firebase ل ڤێرێ دانە (ژ Firebase Console) ===== */
+const firebaseConfig = {
+  apiKey: "AIzaSyDF0R5sCCG-AGg-e1rbqduCsgewNTDKerY",
+  authDomain: "barz-dresses.firebaseapp.com",
+  projectId: "barz-dresses",
+  storageBucket: "barz-dresses.firebasestorage.app",
+  messagingSenderId: "936197200238",
+  appId: "1:936197200238:web:8aa274dec8a68ea4b3497f"
+};
+/* ======================================================================== */
+
+const CATS = [
+  {id:"bride",      name:"کراسێن بووکێ",               icon:"👰"},
+  {id:"fullstone",  name:"کراسێن فول قاش",              icon:"✨"},
+  {id:"fs_fsjacket",name:"کراس و کورتەک فول قاش",       icon:"💎"},
+  {id:"fs_jacket",  name:"کراس فول قاش و کورتەکێ عادی", icon:"🧥"},
+];
+const STATUS = { pending:"چاڤەڕێ", confirmed:"پشتڕاستکری", picked:"هاتە برن",
+  returned:"هاتە زڤڕاندن", sold:"هاتە فرۆتن", cancelled:"هەلوەشاند" };
+const GENDER = { f:"مێ (ژن)", m:"نێر (زەلام)" };
+const PAY = { fib:"FIB", fastpay:"FastPay", cash:"نەقد" };
+const MONTHS = ["کانوونا دووێ","شوبات","ئادار","نیسان","گولان","حزیران","تیرمەه","ئاب","ئەیلوول","چریا ئێکێ","چریا دووێ","کانوونا ئێکێ"];
+const WDAYS = ["ش","١ش","٢ش","٣ش","٤ش","٥ش","ئ"];
+
+const $ = s => document.querySelector(s);
+const app = $("#app");
+const esc = s => String(s ?? "").replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+const money = n => (Number(n)||0).toLocaleString("en") + " د.ع";
+const pad = n => String(n).padStart(2,"0");
+const ymd = d => d.getFullYear()+"-"+pad(d.getMonth()+1)+"-"+pad(d.getDate());
+const today = () => ymd(new Date());
+const catOf = id => CATS.find(c => c.id === id) || CATS[0];
+const fitText = it => {
+  const h = (it.hMin||it.hMax) ? `بەژن ${it.hMin||"?"}–${it.hMax||"?"} سم` : "";
+  const w = (it.wMin||it.wMax) ? `کێش ${it.wMin||"?"}–${it.wMax||"?"} کگم` : "";
+  return [h,w].filter(Boolean).join(" • ");
+};
+const ts = v => v?.toMillis ? v.toMillis() : (typeof v==="number" ? v : 0);
+
+if (firebaseConfig.apiKey === "YOUR_API_KEY"){
+  app.innerHTML = `<div class="empty">زانیاریێن Firebase هێشتا نەهاتینە دانان. فایلا README بخوینە و <b>firebaseConfig</b> ل ناڤ index.html دا پڕ بکە.</div>`;
+  throw new Error("firebaseConfig missing");
+}
+const fb = initializeApp(firebaseConfig);
+const auth = getAuth(fb);
+const db = getFirestore(fb);
+
+const S = { user:null, isShop:false, myShop:null, shops:[], shop:null, items:[], avail:{},
+  mine:[], shopBookings:[], shopItems:[], cat:"all", mode:"all", stF:"active",
+  cal:{item:null,y:0,m:0}, unsubs:[], shopUnsub:null };
+
+const clearSubs = () => { S.unsubs.forEach(u => u()); S.unsubs = []; };
+const sub = u => S.unsubs.push(u);
+
+/* ---------- auth ---------- */
+onAuthStateChanged(auth, async u => {
+  if (!u){ try{ await signInAnonymously(auth); }catch(e){ app.innerHTML = `<div class="empty">پەیوەندی ب سێرڤەری سەرنەکەفت. ل README بنێرە: Anonymous sign-in دڤێت چالاک بیت.</div>`; } return; }
+  S.user = u; S.isShop = !u.isAnonymous;
+  if (S.shopUnsub){ S.shopUnsub(); S.shopUnsub = null; } S.myShop = null;
+  if (S.isShop){
+    S.shopUnsub = onSnapshot(doc(db,"shops",u.uid), d => {
+      S.myShop = d.exists() ? {id:d.id, ...d.data()} : null;
+      if (location.hash.startsWith("#/dashboard")) renderDashSettings();
+    });
+  }
+  renderNav(); route();
+});
+
+function renderNav(){
+  $("#navLinks").innerHTML = S.isShop
+    ? `<a href="#/dashboard">داشبۆردا دوکانێ</a><a href="#/" >دوکان</a><a href="#" id="logout">دەرکەفتن</a>`
+    : `<a href="#/">دوکان</a><a href="#/my">حجزێن من</a><a href="#/login">چوونا ژوور بۆ دوکانان</a>`;
+}
+
+/* ---------- router ---------- */
+window.addEventListener("hashchange", route);
+function route(){
+  if (!S.user) return;
+  clearSubs();
+  const h = location.hash.replace(/^#/, "") || "/";
+  const [, p1, p2] = h.split("/");
+  if (!p1) return viewHome();
+  if (p1==="shop" && p2) return viewShop(p2);
+  if (p1==="my") return viewMy();
+  if (p1==="login") return S.isShop ? (location.hash="#/dashboard") : viewLogin();
+  if (p1==="register") return S.isShop ? (location.hash="#/dashboard") : viewRegister();
+  if (p1==="dashboard") return S.isShop ? viewDashboard() : (location.hash="#/login");
+  viewHome();
+}
+const hero = (title, subt) => `<header class="hero"><div class="wrap"><h1>${esc(title)}</h1><p>${esc(subt)}</p></div><div class="band" aria-hidden="true"></div></header>`;
+
+/* ---------- home: shops ---------- */
+function viewHome(){
+  app.innerHTML = hero("پەروکێت بارز","کراسێن بووکێ و فول قاش ژ باشترین دوکانان — ب کرێ یان بۆ فرۆتنێ") +
+    `<div class="wrap"><div class="grid" id="shopGrid"><div class="loading">تێتە بارکرن…</div></div></div>`;
+  sub(onSnapshot(query(collection(db,"shops"), where("approved","==",true)), q => {
+    S.shops = q.docs.map(d => ({id:d.id, ...d.data()}));
+    $("#shopGrid").innerHTML = S.shops.length ? S.shops.map(s => `
+      <a class="card shopcard" href="#/shop/${s.id}">
+        <div class="pic">👗</div>
+        <div class="body"><h3>${esc(s.name)}</h3><div class="meta">${esc(s.addr||"")}</div></div>
+      </a>`).join("") : `<div class="empty" style="grid-column:1/-1">هێشتا چ دوکان نەهاتینە زێدەکرن.</div>`;
+  }, () => { $("#shopGrid").innerHTML = `<div class="empty" style="grid-column:1/-1">بارکرن سەرنەکەفت.</div>`; }));
+}
+
+/* ---------- shop catalog ---------- */
+function viewShop(shopId){
+  S.cat = "all"; S.mode = "all";
+  app.innerHTML = `<div id="shopHero"></div><div class="wrap">
+    <div class="bar">
+      <div class="chips" id="cats"></div>
+      <div class="tabs" role="tablist">
+        <button class="tab" role="tab" data-mode="all" aria-selected="true">هەمی</button>
+        <button class="tab" role="tab" data-mode="rent" aria-selected="false">ب کرێ</button>
+        <button class="tab" role="tab" data-mode="sale" aria-selected="false">بۆ فرۆتنێ</button>
+      </div>
+    </div>
+    <div class="grid" id="grid"></div><div class="empty hide" id="empty"></div></div>`;
+  sub(onSnapshot(doc(db,"shops",shopId), d => {
+    S.shop = d.exists() ? {id:d.id, ...d.data()} : null;
+    $("#shopHero").innerHTML = S.shop ? hero(S.shop.name, [S.shop.addr, S.shop.phone].filter(Boolean).join(" • ")) : `<div class="empty">ئەڤ دوکانە نەهاتە دیتن.</div>`;
+    if ($("#itemDlg").open) updatePayInfo();
+  }));
+  sub(onSnapshot(query(collection(db,"items"), where("shopId","==",shopId)), q => {
+    S.items = q.docs.map(d => ({id:d.id, ...d.data()})).sort((a,b) => ts(b.createdAt)-ts(a.createdAt));
+    renderGrid();
+  }));
+  sub(onSnapshot(query(collection(db,"availability"), where("shopId","==",shopId)), q => {
+    S.avail = {}; q.docs.forEach(d => S.avail[d.id] = d.data());
+    if ($("#itemDlg").open) renderCal();
+  }));
+  renderCats();
+}
+function renderCats(){
+  const all = [{id:"all",name:"هەمی بەش"}, ...CATS];
+  $("#cats").innerHTML = all.map(c => `<button class="chip" data-cat="${c.id}" aria-pressed="${S.cat===c.id}">${esc(c.name)}</button>`).join("");
+}
+function renderGrid(){
+  const g = $("#grid"); if (!g) return;
+  const list = S.items.filter(it => (S.cat==="all" || it.cat===S.cat) &&
+    (S.mode==="all" || (S.mode==="rent" && it.forRent && !it.sold) || (S.mode==="sale" && it.forSale && !it.sold)));
+  g.innerHTML = list.map(it => `
+    <button class="card" data-item="${it.id}">
+      <div class="pic">${it.img ? `<img src="${esc(it.img)}" alt="${esc(it.name)}" loading="lazy">` : catOf(it.cat).icon}
+        ${it.sold ? `<div class="sold">هاتیە فرۆتن</div>` : ""}</div>
+      <div class="body">
+        <h3>${esc(it.name)}</h3>
+        <div class="meta">${esc(catOf(it.cat).name)}</div>
+        ${fitText(it) ? `<div class="fit">${esc(fitText(it))}</div>` : ""}
+        <div class="prices">
+          ${it.forRent && !it.sold ? `<span>حجز: <b>${money(it.rentPrice)}</b></span>` : ""}
+          ${it.forSale && !it.sold ? `<span>فرۆتن: <b>${money(it.salePrice)}</b></span>` : ""}
+        </div>
+      </div>
+    </button>`).join("");
+  const emp = $("#empty");
+  emp.classList.toggle("hide", list.length > 0);
+  emp.textContent = S.items.length ? "چ کراس د ڤی بەشی دا نینن." : "ئەڤێ دوکانێ هێشتا چ کراس زێدە نەکرینە.";
+}
+
+/* ---------- calendar ---------- */
+const activeRanges = id => ((S.avail[id]||{}).ranges||[]).filter(r => r.status!=="cancelled" && r.status!=="returned");
+function dayMap(id){
+  const map = {};
+  activeRanges(id).forEach(r => {
+    const d = new Date(r.from+"T00:00:00"), end = new Date(r.to+"T00:00:00");
+    for (; d <= end; d.setDate(d.getDate()+1)) { const k = ymd(d); if (!map[k]) map[k] = "busy"; }
+    map[r.from] = "pick"; map[r.to] = "ret"; if (r.wedding) map[r.wedding] = "wed";
+  });
+  return map;
+}
+function renderCal(){
+  const box = $("#cal"); if (!box) return;
+  const {item, y, m} = S.cal, map = dayMap(item), t = today();
+  const lead = (new Date(y, m, 1).getDay() + 1) % 7, days = new Date(y, m+1, 0).getDate();
+  const lbl = {pick:"بردن", wed:"دەوات", ret:"زڤڕاندن"};
+  let cells = WDAYS.map(w => `<div class="wd">${w}</div>`).join("") + "<div></div>".repeat(lead);
+  for (let d=1; d<=days; d++){
+    const k = y+"-"+pad(m+1)+"-"+pad(d), st = map[k]||"";
+    cells += `<div class="day ${st} ${k<t?"past":""} ${k===t?"today":""}">${d}${lbl[st]?`<i>${lbl[st]}</i>`:""}</div>`;
+  }
+  box.innerHTML = `<div class="cal-head"><button data-cal="-1" aria-label="مەها بەری">›</button><b>${MONTHS[m]} ${y}</b><button data-cal="1" aria-label="مەها پاشی">‹</button></div>
+    <div class="cal-grid">${cells}</div>
+    <div class="legend"><span style="--c:var(--blue)">رۆژا بردنێ</span><span style="--c:var(--gold)">رۆژا دەواتێ</span><span style="--c:var(--ok)">رۆژا زڤڕاندنێ</span><span style="--c:var(--busy)">لای کڕیاری یە</span></div>`;
+}
+
+/* ---------- item dialog + booking ---------- */
+function openItem(id, list){
+  const it = (list||S.items).find(x => x.id===id); if (!it) return;
+  S.openItem = it;
+  const canRent = it.forRent && !it.sold, canBuy = it.forSale && !it.sold, readOnly = !!list;
+  const mode = canRent ? "rent" : "buy";
+  const now = new Date(); S.cal = {item:id, y:now.getFullYear(), m:now.getMonth()};
+  $("#itemBody").innerHTML = `
+    <button class="close" data-close aria-label="داخستن">×</button>
+    <h2>${esc(it.name)}</h2>
+    <div class="meta">${esc(catOf(it.cat).name)}${it.color?" • "+esc(it.color):""}</div>
+    ${fitText(it) ? `<div class="fit">گونجایە بۆ: ${esc(fitText(it))}</div>` : ""}
+    ${it.img ? `<img src="${esc(it.img)}" alt="" style="border-radius:12px;margin-top:12px;max-height:360px;width:100%;object-fit:cover">` : ""}
+    ${it.desc ? `<p>${esc(it.desc)}</p>` : ""}
+    <div class="prices" style="font-size:15px">
+      ${it.forRent ? `<span>بهایێ حجزێ: <b>${money(it.rentPrice)}</b></span>` : ""}
+      ${it.forSale ? `<span>بهایێ فرۆتنێ: <b>${money(it.salePrice)}</b></span>` : ""}
+    </div>
+    ${it.sold ? `<div class="soldbox">ئەڤ کراسە هاتیە فرۆتن و ئێدی بەردەست نینە.</div>` : `<h3>کالێندەرا ڤی کراسی</h3><div class="cal" id="cal"></div>`}
+    ${readOnly || (!canRent && !canBuy) ? "" : `
+    <div class="seg" role="group">
+      ${canRent?`<button data-m="rent" aria-pressed="${mode==="rent"}">حجزکرن • ${money(it.rentPrice)}</button>`:""}
+      ${canBuy?`<button data-m="buy" aria-pressed="${mode==="buy"}">کڕین • ${money(it.salePrice)}</button>`:""}
+    </div>
+    <div id="rentBox" class="${mode==="rent"?"":"hide"}"><div class="row3">
+      <label>رۆژا بردنێ<input type="date" id="bPick" min="${today()}"></label>
+      <label>رۆژا دەواتێ<input type="date" id="bWed" min="${today()}"></label>
+      <label>رۆژا زڤڕاندنێ<input type="date" id="bRet" min="${today()}"></label>
+    </div></div>
+    <h3>زانیاریێن تە</h3>
+    <label>ناڤێ تە<input id="bName" autocomplete="name"></label>
+    <div class="row">
+      <label>ژمارا مۆبایلێ<input id="bPhone" inputmode="tel" autocomplete="tel" placeholder="0750 000 0000"></label>
+      <label>جنس<select id="bGender"><option value="">هەلبژێرە</option><option value="f">${GENDER.f}</option><option value="m">${GENDER.m}</option></select></label>
+    </div>
+    <label>ناڤ و نیشان<input id="bAddr" autocomplete="street-address" placeholder="باژێڕ، گەڕەک، کۆلان"></label>
+    <h3>پارەدان</h3>
+    <div class="row3"><label><input type="radio" name="pay" value="fib"> FIB</label><label><input type="radio" name="pay" value="fastpay"> FastPay</label><label><input type="radio" name="pay" value="cash"> نەقد (دەمێ گەهاندنێ)</label></div>
+    <div class="paybox" id="payInfo">رێکا پارەدانێ هەلبژێرە.</div>
+    <label id="refBox">ژمارا مامەلێ (Transaction ID) پشتی ڤەگوهاستنێ<input id="bRef" dir="ltr"></label>
+    <label>تێبینی (دڤێت نە)<textarea id="bNote" rows="2"></textarea></label>
+    <div class="msg" id="bMsg"></div>
+    <div class="actions"><button class="btn btn-main" id="bSend" data-mode="${mode}">ناردنا حجزێ</button></div>
+    <p class="note">پشتی ناردنێ، دوکان دێ پارەدانێ پشتڕاست کەت و پەیوەندیێ ب تە کەت.</p>`}`;
+  renderCal();
+  $("#itemDlg").showModal();
+}
+function updatePayInfo(){
+  const box = $("#payInfo"), it = S.openItem; if (!box || !it) return;
+  const method = document.querySelector('input[name=pay]:checked')?.value;
+  const amount = $("#bSend").dataset.mode==="rent" ? it.rentPrice : it.salePrice;
+  const s = S.shop || {};
+  $("#refBox").classList.toggle("hide", method==="cash");
+  if (!method){ box.textContent = "رێکا پارەدانێ هەلبژێرە."; return; }
+  if (method==="cash"){ box.innerHTML = `بڕێ <b>${money(amount)}</b> ب نەقدی دەمێ کراس دگەهیتە تە یان دەمێ تو ژ دوکانێ وەردگری دێ دەی. چ پارە نوکە ناهێتە دان.`; return; }
+  const num = method==="fib" ? s.fib : s.fast, nm = method==="fib" ? s.fibName : s.fastName;
+  box.innerHTML = num
+    ? `بڕێ <b>${money(amount)}</b> ب رێکا ${PAY[method]} ڤەگوهێزە بۆ ژمارا <b dir="ltr">${esc(num)}</b>${nm?` (${esc(nm)})`:""}، پاشی ژمارا مامەلێ ل خوارێ بنڤیسە.`
+    : `ئەڤێ دوکانێ هێشتا ژمارا ${PAY[method]} دانەنایە. پەیوەندیێ ب دوکانێ بکە${s.phone?`: <span dir="ltr">${esc(s.phone)}</span>`:""}.`;
+}
+async function sendBooking(btn){
+  const msg = $("#bMsg"); msg.className = "msg";
+  const fail = t => { msg.classList.add("bad"); msg.textContent = t; };
+  const it = S.openItem, type = btn.dataset.mode;
+  const v = id => $(id).value.trim();
+  const name=v("#bName"), phone=v("#bPhone"), gender=$("#bGender").value, addr=v("#bAddr"),
+        pay=document.querySelector('input[name=pay]:checked')?.value||"", payRef=v("#bRef"), note=v("#bNote");
+  let from="", wedding="", to="";
+  if (type==="rent"){
+    from=$("#bPick").value; wedding=$("#bWed").value; to=$("#bRet").value;
+    if (!from || !wedding || !to) return fail("رۆژا بردنێ، رۆژا دەواتێ و رۆژا زڤڕاندنێ هەلبژێرە.");
+    if (from < today()) return fail("رۆژا بردنێ نابیت د بۆری دا بیت.");
+    if (!(from <= wedding && wedding <= to)) return fail("رێزبەندیا رۆژان دڤێت ئەڤە بیت: بردن ← دەوات ← زڤڕاندن.");
+  }
+  if (!name) return fail("ناڤێ خۆ بنڤیسە.");
+  if (phone.replace(/\D/g,"").length < 10) return fail("ژمارا مۆبایلێ یا دروست بنڤیسە.");
+  if (!gender) return fail("جنسی هەلبژێرە.");
+  if (!addr) return fail("ناڤ و نیشانا خۆ بنڤیسە.");
+  if (!pay) return fail("رێکا پارەدانێ هەلبژێرە (FIB، FastPay یان نەقد).");
+  if (pay!=="cash" && payRef.length < 4) return fail("ژمارا مامەلا پارەدانێ بنڤیسە.");
+
+  btn.disabled = true; msg.textContent = "دهێتە ناردن…";
+  const bRef = doc(collection(db,"bookings")), bid = bRef.id;
+  const aRef = doc(db,"availability",it.id);
+  try{
+    await runTransaction(db, async tx => {
+      const aSnap = await tx.get(aRef);
+      const cur = aSnap.exists() ? aSnap.data() : {shopId:it.shopId, ranges:[], saleHold:null, soldTo:null};
+      if (cur.soldTo) throw {code:"held"};
+      if (type==="rent"){
+        const clash = (cur.ranges||[]).find(r => r.status!=="cancelled" && r.status!=="returned" && r.from <= to && from <= r.to);
+        if (clash) throw {code:"clash"};
+        tx.set(aRef, {shopId:cur.shopId, ranges:[...(cur.ranges||[]), {bid, from, wedding, to, status:"pending"}], saleHold:cur.saleHold??null, soldTo:cur.soldTo??null});
+      } else {
+        if (cur.saleHold) throw {code:"held"};
+        tx.set(aRef, {shopId:cur.shopId, ranges:cur.ranges||[], saleHold:bid, soldTo:cur.soldTo??null});
+      }
+      tx.set(bRef, { shopId:it.shopId, itemId:it.id, itemName:it.name, customerUid:S.user.uid, type,
+        from, wedding, to, name, phone, gender, addr, pay, payRef: pay==="cash" ? "" : payRef, paid:false, note,
+        price: type==="rent" ? it.rentPrice : it.salePrice, status:"pending", createdAt:serverTimestamp() });
+    });
+    msg.classList.add("ok"); msg.textContent = "حجزا تە هاتە ناردن. دوکان دێ پارەدانێ پشتڕاست کەت و پەیوەندیێ ب تە کەت.";
+    btn.classList.add("hide");
+  }catch(e){
+    btn.disabled = false;
+    fail(e.code==="clash" ? "ئەڤ رۆژە بەرێ هاتینە حجزکرن. ل کالێندەرێ رۆژەکا بەردەست هەلبژێرە." :
+      e.code==="held" ? "ئەڤ کراسە هاتیە فرۆتن یان کەسەکێ دی داخوازا کڕینێ کریە." :
+      e.code==="permission-denied" ? "حجز نەهاتە قەبویلکرن. پەڕێ نوو بکە و دووبارە بکە." :
+      "ناردن سەرنەکەفت، دووبارە بکە.");
+  }
+}
+
+/* ---------- my bookings (customer) ---------- */
+const dates = b => b.type==="rent" ? `بردن: ${esc(b.from)}<br>دەوات: ${esc(b.wedding||"—")}<br>زڤڕاندن: ${esc(b.to)}` : "—";
+function viewMy(){
+  app.innerHTML = `<div class="wrap" style="padding-top:20px"><section class="panel"><h2>حجزێن من</h2><div id="myList"><div class="loading">تێتە بارکرن…</div></div>
+    <p class="note">حجزێن تە ل سەر ڤی مۆبایلی/براوزەری دهێنە پاراستن.</p></section></div>`;
+  sub(onSnapshot(query(collection(db,"bookings"), where("customerUid","==",S.user.uid)), q => {
+    const list = q.docs.map(d => ({id:d.id, ...d.data()})).sort((a,b) => ts(b.createdAt)-ts(a.createdAt));
+    $("#myList").innerHTML = !list.length ? `<p class="note">تە هێشتا چ حجز نەکرینە.</p>` :
+      `<div class="tbl"><table style="min-width:600px"><thead><tr><th>کراس</th><th>جۆر</th><th>رۆژ</th><th>بها</th><th>پارەدان</th><th>رەوش</th></tr></thead><tbody>` +
+      list.map(b => `<tr><td>${esc(b.itemName)}</td><td>${b.type==="rent"?"حجز":"کڕین"}</td><td>${dates(b)}</td><td>${money(b.price)}</td>
+        <td>${esc(PAY[b.pay]||"—")}<br><span class="${b.paid?"paid":"unpaid"}">${b.paid?"پارە گەهشت":(b.pay==="cash"?"دەمێ گەهاندنێ":"چاڤەڕێیا پشتڕاستکرنێ")}</span></td>
+        <td><span class="st st-${esc(b.status)}">${esc(STATUS[b.status]||b.status)}</span></td></tr>`).join("") + `</tbody></table></div>`;
+  }));
+}
+
+/* ---------- login / register ---------- */
+const authErr = c => ({
+  "auth/invalid-credential":"ئیمەیل یان وشا نهێنی خەلەتە.", "auth/wrong-password":"ئیمەیل یان وشا نهێنی خەلەتە.",
+  "auth/user-not-found":"ئیمەیل یان وشا نهێنی خەلەتە.", "auth/invalid-email":"ئیمەیل یا دروست نینە.",
+  "auth/email-already-in-use":"ئەڤ ئیمەیلە بەرێ هاتیە تۆمارکرن.", "auth/weak-password":"وشا نهێنی دڤێت لایەنێ کێم ٦ پیت بن.",
+  "auth/too-many-requests":"گەلەک هەوڵ هاتنە دان. پشتی کێمەکێ دووبارە بکە.", "auth/network-request-failed":"پەیوەندیا ئینتەرنێتێ نینە."
+}[c] || "کارێ سەرنەکەفت، دووبارە بکە.");
+
+function viewLogin(){
+  app.innerHTML = `<div class="wrap auth"><div class="auth-card">
+    <div class="lock">🔒</div><h2>چوونا ژوور</h2>
+    <p class="sub">دا ب کار ئینانا سیستەمێ، ب هەژمارا دوکانا خۆ بچە ژوور.</p>
+    <label>ئیمەیل<input id="lEmail" type="email" dir="ltr" autocomplete="email" placeholder="shop@example.com"></label>
+    <label>وشا نهێنی<input id="lPass" type="password" dir="ltr" autocomplete="current-password"></label>
+    <div class="msg" id="lMsg"></div>
+    <button class="btn btn-main btn-block" id="doLogin">چوونا ژوور</button>
+    <div class="alt"><a href="#" id="forgot">وشا نهێنی ژبیرکر؟</a></div>
+    <div class="alt">دوکانا تە هێشتا هەژمار نینە؟ <a href="#/register">تۆمارکرنا دوکانێ</a></div>
+  </div></div>`;
+}
+async function doLogin(){
+  const m = $("#lMsg"); m.className = "msg";
+  const email = $("#lEmail").value.trim(), pass = $("#lPass").value;
+  if (!email || !pass){ m.classList.add("bad"); m.textContent = "ئیمەیل و وشا نهێنی بنڤیسە."; return; }
+  $("#doLogin").disabled = true;
+  try{ await signInWithEmailAndPassword(auth, email, pass); location.hash = "#/dashboard"; }
+  catch(e){ m.classList.add("bad"); m.textContent = authErr(e.code); $("#doLogin").disabled = false; }
+}
+async function forgot(){
+  const m = $("#lMsg"); m.className = "msg";
+  const email = $("#lEmail").value.trim();
+  if (!email){ m.classList.add("bad"); m.textContent = "ئیمەیلا خۆ ل سەرێ بنڤیسە، پاشی ل ڤێرێ بدە."; return; }
+  try{ await sendPasswordResetEmail(auth, email); m.classList.add("ok"); m.textContent = "لینکا گوهۆڕینا وشا نهێنی بۆ ئیمەیلا تە هاتە ناردن."; }
+  catch(e){ m.classList.add("bad"); m.textContent = authErr(e.code); }
+}
+function viewRegister(){
+  app.innerHTML = `<div class="wrap auth"><div class="auth-card">
+    <div class="lock">🏪</div><h2>تۆمارکرنا دوکانێ</h2>
+    <p class="sub">هەژمارەکێ بۆ دوکانا خۆ دروست بکە.</p>
+    <label>ناڤێ دوکانێ<input id="rName"></label>
+    <label>ژمارا تەلەفۆنێ<input id="rPhone" inputmode="tel" dir="ltr"></label>
+    <label>ئیمەیل<input id="rEmail" type="email" dir="ltr" autocomplete="email" placeholder="shop@example.com"></label>
+    <label>وشا نهێنی<input id="rPass" type="password" dir="ltr" autocomplete="new-password"></label>
+    <label>دووبارەکرنا وشا نهێنی<input id="rPass2" type="password" dir="ltr" autocomplete="new-password"></label>
+    <div class="msg" id="rMsg"></div>
+    <button class="btn btn-main btn-block" id="doRegister">تۆمارکرن</button>
+    <div class="alt">هەژمار هەیە؟ <a href="#/login">چوونا ژوور</a></div>
+  </div></div>`;
+}
+async function doRegister(){
+  const m = $("#rMsg"); m.className = "msg";
+  const bad = t => { m.classList.add("bad"); m.textContent = t; };
+  const name=$("#rName").value.trim(), phone=$("#rPhone").value.trim(), email=$("#rEmail").value.trim(), p1=$("#rPass").value, p2=$("#rPass2").value;
+  if (!name) return bad("ناڤێ دوکانێ بنڤیسە.");
+  if (phone.replace(/\D/g,"").length < 10) return bad("ژمارا تەلەفۆنێ یا دروست بنڤیسە.");
+  if (p1.length < 6) return bad("وشا نهێنی دڤێت لایەنێ کێم ٦ پیت بن.");
+  if (p1 !== p2) return bad("وشێن نهێنی وەک ئێک نینن.");
+  $("#doRegister").disabled = true;
+  try{
+    const cred = await createUserWithEmailAndPassword(auth, email, p1);
+    await setDoc(doc(db,"shops",cred.user.uid), { name, phone, email, addr:"", fib:"", fibName:"", fast:"", fastName:"",
+      approved:false, createdAt:serverTimestamp() });
+    location.hash = "#/dashboard";
+  }catch(e){ bad(authErr(e.code)); $("#doRegister").disabled = false; }
+}
+
+/* ---------- shop dashboard ---------- */
+function viewDashboard(){
+  const uid = S.user.uid;
+  app.innerHTML = `<div class="wrap" style="padding-top:16px">
+    <div id="approval"></div>
+    <section class="panel"><h2>حجز و داخوازی</h2>
+      <div class="chips" id="stFilter" style="margin-bottom:10px"></div>
+      <div class="tbl"><table><thead><tr><th>کراس</th><th>جۆر</th><th>رۆژ</th><th>کڕیار</th><th>پارەدان</th><th>بها</th><th>رەوش</th></tr></thead><tbody id="bkRows"></tbody></table></div>
+    </section>
+    <section class="panel"><h2>کراسێن من</h2>
+      <div class="actions" style="margin-top:0;margin-bottom:12px"><button class="btn btn-main" id="addItem">کراسەکێ نوو زێدە بکە</button></div>
+      <div class="tbl"><table><thead><tr><th>ناڤ</th><th>بەش</th><th>بەژن / کێش</th><th>بهایێ حجزێ</th><th>بهایێ فرۆتنێ</th><th></th></tr></thead><tbody id="itemRows"></tbody></table></div>
+    </section>
+    <section class="panel"><h2>زانیاریێن دوکانێ و پارەدانێ</h2>
+      <div class="row"><label>ناڤێ دوکانێ<input id="setName"></label><label>ئیمەیل<input id="setEmail" dir="ltr" disabled></label></div>
+      <div class="row"><label>ژمارا تەلەفۆنێ<input id="setPhone" inputmode="tel" dir="ltr"></label><label>ناڤنیشان<input id="setAddr"></label></div>
+      <div class="row"><label>ژمارا FIB<input id="setFib" inputmode="tel" dir="ltr"></label><label>ناڤێ ئەکاونتا FIB<input id="setFibName"></label></div>
+      <div class="row"><label>ژمارا FastPay<input id="setFast" inputmode="tel" dir="ltr"></label><label>ناڤێ ئەکاونتا FastPay<input id="setFastName"></label></div>
+      <div class="actions"><button class="btn btn-main" id="saveShop">پاشەکەفتکرن</button><span class="msg" id="shopMsg"></span></div>
+    </section></div>`;
+  renderDashSettings();
+  sub(onSnapshot(query(collection(db,"items"), where("shopId","==",uid)), q => {
+    S.shopItems = q.docs.map(d => ({id:d.id, ...d.data()})).sort((a,b) => ts(b.createdAt)-ts(a.createdAt));
+    renderDashItems();
+  }));
+  sub(onSnapshot(query(collection(db,"availability"), where("shopId","==",uid)), q => {
+    S.avail = {}; q.docs.forEach(d => S.avail[d.id] = d.data());
+    if ($("#itemDlg").open) renderCal();
+  }));
+  sub(onSnapshot(query(collection(db,"bookings"), where("shopId","==",uid)), q => {
+    S.shopBookings = q.docs.map(d => ({id:d.id, ...d.data()}));
+    renderDashBookings();
+  }));
+}
+function renderDashSettings(){
+  const s = S.myShop, ap = $("#approval"); if (!ap) return;
+  ap.innerHTML = !s ? `<div class="banner">زانیاریێن دوکانێ نەهاتنە دیتن. ل خوارێ ناڤێ دوکانێ بنڤیسە و پاشەکەفت بکە.</div>`
+    : s.approved ? "" : `<div class="banner">دوکانا تە چاڤەڕێیا پشتڕاستکرنێ یە. تو دشێی کراسان زێدە بکەی، بەلێ هەتا پشتڕاست نەبیت بۆ کڕیاران دیار نابیت.</div>`;
+  if ((document.activeElement?.id||"").startsWith("set")) return;
+  const d = s || {};
+  $("#setName").value = d.name||""; $("#setEmail").value = d.email || S.user.email || "";
+  $("#setPhone").value = d.phone||""; $("#setAddr").value = d.addr||"";
+  $("#setFib").value = d.fib||""; $("#setFibName").value = d.fibName||"";
+  $("#setFast").value = d.fast||""; $("#setFastName").value = d.fastName||"";
+}
+function renderDashBookings(){
+  const el = $("#bkRows"); if (!el) return;
+  const fs = [["active","یێن چالاک"],["pending","چاڤەڕێ"],["unpaid","پارە نەگەهشتی"],["all","هەمی"]];
+  $("#stFilter").innerHTML = fs.map(([k,v]) => `<button class="chip" data-stf="${k}" aria-pressed="${S.stF===k}">${v}</button>`).join("");
+  let rows = S.shopBookings.slice().sort((a,b) => ts(b.createdAt)-ts(a.createdAt));
+  if (S.stF==="active") rows = rows.filter(b => !["returned","sold","cancelled"].includes(b.status));
+  if (S.stF==="pending") rows = rows.filter(b => b.status==="pending");
+  if (S.stF==="unpaid") rows = rows.filter(b => !b.paid && b.status!=="cancelled");
+  const next = b => b.type==="rent" ? ["pending","confirmed","picked","returned","cancelled"] : ["pending","confirmed","sold","cancelled"];
+  el.innerHTML = rows.length ? rows.map(b => `<tr>
+    <td>${esc(b.itemName)}</td><td>${b.type==="rent"?"حجز":"کڕین"}</td><td style="white-space:nowrap">${dates(b)}</td>
+    <td>${esc(b.name)} <span class="note">(${esc(GENDER[b.gender]||"—")})</span><br><a href="tel:${esc(b.phone)}" dir="ltr">${esc(b.phone)}</a><br>
+      <span class="note">${esc(b.addr||"")}</span>${b.note?`<div class="note">تێبینی: ${esc(b.note)}</div>`:""}</td>
+    <td>${esc(PAY[b.pay]||"—")}<br><span class="note" dir="ltr">${esc(b.payRef||"")}</span><br>
+      <label style="margin:4px 0 0;color:var(--ink)"><input type="checkbox" data-paid="${b.id}" ${b.paid?"checked":""}> پارە گەهشت</label></td>
+    <td>${money(b.price)}</td>
+    <td><select data-bk="${b.id}" style="min-width:120px">${next(b).map(s=>`<option value="${s}" ${s===b.status?"selected":""}>${STATUS[s]}</option>`).join("")}</select></td></tr>`).join("")
+    : `<tr><td colspan="7" class="note">چ حجز نینن.</td></tr>`;
+}
+function renderDashItems(){
+  const el = $("#itemRows"); if (!el) return;
+  el.innerHTML = S.shopItems.length ? S.shopItems.map(it => `<tr>
+    <td>${esc(it.name)}${it.sold?' <span class="st st-sold">فرۆتی</span>':""}</td><td>${esc(catOf(it.cat).name)}</td><td>${esc(fitText(it)||"—")}</td>
+    <td>${it.forRent?money(it.rentPrice):"—"}</td><td>${it.forSale?money(it.salePrice):"—"}</td>
+    <td style="white-space:nowrap"><button class="btn btn-ghost btn-sm" data-view="${it.id}">کالێندەر</button>
+      <button class="btn btn-ghost btn-sm" data-edit="${it.id}">دەستکاری</button>
+      <button class="btn btn-bad btn-sm" data-del="${it.id}">ژێبرن</button></td></tr>`).join("")
+    : `<tr><td colspan="6" class="note">هێشتا چ کراس نینن. کراسێ ئێکێ زێدە بکە.</td></tr>`;
+}
+async function changeStatus(sel){
+  const b = S.shopBookings.find(x => x.id===sel.dataset.bk); if (!b) return;
+  const status = sel.value; sel.disabled = true;
+  try{
+    await updateDoc(doc(db,"bookings",b.id), {status});
+    const aRef = doc(db,"availability",b.itemId), as = await getDoc(aRef);
+    if (as.exists()){
+      const cur = as.data();
+      const ranges = (cur.ranges||[]).map(r => r.bid===b.id ? {...r, status} : r);
+      let saleHold = cur.saleHold ?? null, soldTo = cur.soldTo ?? null;
+      if (b.type==="buy"){
+        if (status==="cancelled" && saleHold===b.id) saleHold = null;
+        soldTo = status==="sold" ? b.id : (soldTo===b.id ? null : soldTo);
+      }
+      await updateDoc(aRef, {ranges, saleHold, soldTo});
+    }
+    if (b.type==="buy") await updateDoc(doc(db,"items",b.itemId), {sold: status==="sold"});
+  }catch(e){ alert("گوهۆڕین سەرنەکەفت، دووبارە بکە."); }
+  finally{ sel.disabled = false; }
+}
+async function togglePaid(cb){
+  cb.disabled = true;
+  try{ await updateDoc(doc(db,"bookings",cb.dataset.paid), {paid: cb.checked}); }
+  catch(e){ cb.checked = !cb.checked; alert("گوهۆڕین سەرنەکەفت."); }
+  finally{ cb.disabled = false; }
+}
+async function saveShop(){
+  const m = $("#shopMsg"); m.className = "msg";
+  const v = id => $(id).value.trim();
+  const data = { name:v("#setName"), phone:v("#setPhone"), addr:v("#setAddr"),
+    fib:v("#setFib"), fibName:v("#setFibName"), fast:v("#setFast"), fastName:v("#setFastName") };
+  if (!data.name){ m.classList.add("bad"); m.textContent = "ناڤێ دوکانێ بنڤیسە."; return; }
+  try{
+    if (S.myShop) await updateDoc(doc(db,"shops",S.user.uid), data);
+    else await setDoc(doc(db,"shops",S.user.uid), {...data, email:S.user.email||"", approved:false, createdAt:serverTimestamp()});
+    m.classList.add("ok"); m.textContent = "هاتە پاشەکەفتکرن.";
+  }catch(e){ m.classList.add("bad"); m.textContent = "پاشەکەفتکرن سەرنەکەفت."; }
+}
+
+/* image: compressed into the item document (no Firebase Storage needed) */
+async function compressImage(file, max=720, q=0.72){
+  const bmp = await createImageBitmap(file);
+  const scale = Math.min(1, max / Math.max(bmp.width, bmp.height));
+  const c = document.createElement("canvas");
+  c.width = Math.round(bmp.width*scale); c.height = Math.round(bmp.height*scale);
+  c.getContext("2d").drawImage(bmp, 0, 0, c.width, c.height);
+  let url = c.toDataURL("image/jpeg", q);
+  if (url.length > 700000) url = c.toDataURL("image/jpeg", 0.5);
+  return url;
+}
+let editing = null;
+function openEdit(id){
+  editing = id ? S.shopItems.find(x => x.id===id) : null;
+  $("#editTitle").textContent = editing ? "دەستکاریا کراسی" : "کراسەکێ نوو";
+  $("#fCat").innerHTML = CATS.map(c => `<option value="${c.id}">${c.name}</option>`).join("");
+  const it = editing || {forRent:true, forSale:false, cat:"bride"};
+  $("#fName").value = it.name||""; $("#fCat").value = it.cat; $("#fColor").value = it.color||""; $("#fDesc").value = it.desc||"";
+  $("#fHMin").value = it.hMin||""; $("#fHMax").value = it.hMax||""; $("#fWMin").value = it.wMin||""; $("#fWMax").value = it.wMax||"";
+  $("#fRent").checked = !!it.forRent; $("#fSale").checked = !!it.forSale;
+  $("#fRentP").value = it.rentPrice||""; $("#fSaleP").value = it.salePrice||"";
+  $("#fImg").value = ""; $("#editMsg").textContent = "";
+  $("#imgNote").textContent = it.img ? "وێنەیەک هەیە. وێنەیەکێ نوو هەلبژێرە دا بگوهۆڕی." : "";
+  $("#editDlg").showModal();
+}
+async function saveItem(){
+  const m = $("#editMsg"); m.className = "msg";
+  const bad = t => { m.classList.add("bad"); m.textContent = t; };
+  const num = id => Number($(id).value) || 0;
+  const name = $("#fName").value.trim(), hMin=num("#fHMin"), hMax=num("#fHMax"), wMin=num("#fWMin"), wMax=num("#fWMax");
+  if (!name) return bad("ناڤێ کراسی بنڤیسە.");
+  if (hMin && hMax && hMin > hMax) return bad("بەژنا کێمترین نابیت ژ یا زۆرترین مەزنتر بیت.");
+  if (wMin && wMax && wMin > wMax) return bad("کێشا کێمترین نابیت ژ یا زۆرترین مەزنتر بیت.");
+  if (!$("#fRent").checked && !$("#fSale").checked) return bad("حجز یان فرۆتن هەلبژێرە.");
+  if ($("#fRent").checked && !num("#fRentP")) return bad("بهایێ حجزێ بنڤیسە.");
+  if ($("#fSale").checked && !num("#fSaleP")) return bad("بهایێ فرۆتنێ بنڤیسە.");
+  const btn = $("#saveItem"); btn.disabled = true; m.textContent = "دهێتە پاشەکەفتکرن…";
+  try{
+    let img = editing ? (editing.img||"") : "";
+    const f = $("#fImg").files[0];
+    if (f) img = await compressImage(f);
+    const ref = editing ? doc(db,"items",editing.id) : doc(collection(db,"items"));
+    await setDoc(ref, { shopId:S.user.uid, name, cat:$("#fCat").value, color:$("#fColor").value.trim(), desc:$("#fDesc").value.trim(),
+      hMin, hMax, wMin, wMax, forRent:$("#fRent").checked, forSale:$("#fSale").checked,
+      rentPrice:num("#fRentP"), salePrice:num("#fSaleP"), img,
+      sold: editing ? !!editing.sold : false, createdAt: editing ? (editing.createdAt||serverTimestamp()) : serverTimestamp() });
+    $("#editDlg").close();
+  }catch(e){ bad("پاشەکەفتکرن سەرنەکەفت، دووبارە بکە."); }
+  finally{ btn.disabled = false; }
+}
+async function delItem(id){
+  const it = S.shopItems.find(x => x.id===id);
+  if (!confirm(`"${it.name}" بهێتە ژێبرن؟`)) return;
+  try{ await deleteDoc(doc(db,"items",id)); }catch(e){ alert("ژێبرن سەرنەکەفت."); }
+}
+
+/* ---------- events ---------- */
+document.addEventListener("click", e => {
+  const t = e.target.closest("button,a,[data-close]"); if (!t) return;
+  if (t.id==="logout"){ e.preventDefault(); signOut(auth).then(() => location.hash = "#/"); return; }
+  if (t.id==="forgot"){ e.preventDefault(); forgot(); return; }
+  if (t.tagName==="A") return;
+  if (t.dataset.cat){ S.cat = t.dataset.cat; renderCats(); renderGrid(); }
+  else if (t.dataset.mode && t.classList.contains("tab")){
+    S.mode = t.dataset.mode;
+    document.querySelectorAll(".tab").forEach(b => b.setAttribute("aria-selected", b===t)); renderGrid();
+  }
+  else if (t.dataset.item && t.classList.contains("card")) openItem(t.dataset.item);
+  else if (t.dataset.view) openItem(t.dataset.view, S.shopItems);
+  else if (t.dataset.cal){
+    S.cal.m += Number(t.dataset.cal);
+    if (S.cal.m < 0){ S.cal.m = 11; S.cal.y--; } if (S.cal.m > 11){ S.cal.m = 0; S.cal.y++; }
+    renderCal();
+  }
+  else if (t.dataset.m){
+    document.querySelectorAll(".seg button").forEach(b => b.setAttribute("aria-pressed", b===t));
+    $("#rentBox").classList.toggle("hide", t.dataset.m!=="rent");
+    $("#bSend").dataset.mode = t.dataset.m; updatePayInfo();
+  }
+  else if (t.id==="bSend") sendBooking(t);
+  else if (t.hasAttribute("data-close")) t.closest("dialog").close();
+  else if (t.id==="doLogin") doLogin();
+  else if (t.id==="doRegister") doRegister();
+  else if (t.id==="addItem") openEdit(null);
+  else if (t.dataset.edit) openEdit(t.dataset.edit);
+  else if (t.dataset.del) delItem(t.dataset.del);
+  else if (t.id==="saveItem") saveItem();
+  else if (t.id==="saveShop") saveShop();
+  else if (t.dataset.stf){ S.stF = t.dataset.stf; renderDashBookings(); }
+});
+document.addEventListener("change", e => {
+  if (e.target.dataset.bk) changeStatus(e.target);
+  else if (e.target.dataset.paid) togglePaid(e.target);
+  else if (e.target.name==="pay") updatePayInfo();
+});
+document.addEventListener("keydown", e => {
+  if (e.key==="Enter" && e.target.id==="lPass") doLogin();
+});
+</script>
+</body>
+</html>
