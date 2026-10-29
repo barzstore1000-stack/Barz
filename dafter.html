@@ -1,0 +1,644 @@
+<!DOCTYPE html>
+<html lang="ku" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="دەفتەر">
+<meta name="theme-color" content="#4A1D3A">
+<title>دەفتەرا پەروکێت بارز</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Kufi+Arabic:wght@500;700;800&family=Noto+Naskh+Arabic:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#F6EEF1; --surface:#FFFFFF; --ink:#2B1624; --muted:#7A5E6E;
+  --plum:#4A1D3A; --plum-2:#6B2C55; --gold:#B8903A; --gold-soft:#EAD9AE;
+  --line:#E4D3DB; --ok:#2E7D5B; --warn:#B7791F; --bad:#B23A48; --blue:#3A6EA5; --busy:#F1D6E2;
+  --r:16px;
+}
+@media (prefers-color-scheme:dark){
+  :root{ --bg:#1C1018; --surface:#2A1823; --ink:#F4E7EE; --muted:#C2A5B5;
+    --plum:#E7B8D6; --plum-2:#D59BC0; --gold:#DDB65E; --gold-soft:#4A3A1F; --line:#43293A; --busy:#4A2A3D; }
+}
+*,*::before,*::after{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:"Noto Naskh Arabic","Segoe UI",Tahoma,sans-serif;font-size:17px;line-height:1.7;
+  padding-bottom:calc(84px + env(safe-area-inset-bottom,0px))}
+h1,h2,h3,.btn,.chip,.tabbtn,.badge,dt{font-family:"Noto Kufi Arabic","Noto Naskh Arabic",Tahoma,sans-serif}
+img{max-width:100%;display:block}
+button{font:inherit;cursor:pointer}
+a{color:var(--plum-2)}
+:focus-visible{outline:3px solid var(--gold);outline-offset:2px}
+.hide{display:none!important}
+.note{font-size:13px;color:var(--muted)}
+
+.top{position:sticky;top:0;z-index:20;background:var(--plum);color:#fff;display:flex;justify-content:space-between;align-items:center;
+  padding:calc(10px + env(safe-area-inset-top,0px)) 16px 10px}
+.top h1{margin:0;font-size:19px;font-weight:800}
+.top button{background:transparent;border:1px solid rgba(255,255,255,.4);color:#fff;border-radius:10px;padding:4px 12px;font-size:13px}
+@media (prefers-color-scheme:dark){ .top{background:#3A1630} }
+.wrap{max-width:760px;margin:0 auto;padding:14px 14px 0}
+
+.tabbar{position:fixed;inset:auto 0 0 0;z-index:20;background:var(--surface);border-top:1px solid var(--line);display:grid;grid-template-columns:repeat(3,1fr);
+  padding:6px 8px calc(6px + env(safe-area-inset-bottom,0px))}
+.tabbtn{background:none;border:none;color:var(--muted);padding:6px 4px;font-size:12px;display:flex;flex-direction:column;align-items:center;gap:0;position:relative}
+.tabbtn span.i{font-size:22px;line-height:1.2}
+.tabbtn[aria-selected="true"]{color:var(--plum)}
+.tabbtn .cnt{position:absolute;top:0;inset-inline-end:calc(50% - 26px);background:var(--bad);color:#fff;border-radius:999px;min-width:20px;height:20px;font-size:12px;display:grid;place-items:center;padding:0 5px}
+
+.card{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:14px;margin-bottom:14px}
+.sect{margin:18px 0 8px;font-size:16px;font-weight:700;display:flex;align-items:center;gap:8px}
+.sect.bad{color:var(--bad)} .sect.gold{color:var(--gold)} .sect.blue{color:var(--blue)}
+.datebar{font-family:"Noto Kufi Arabic",sans-serif;color:var(--muted);font-size:14px}
+.allgood{text-align:center;color:var(--ok);padding:26px 10px;font-weight:700}
+
+.btn{border:none;border-radius:12px;padding:11px 18px;font-size:15px;font-weight:700}
+.btn-main{background:var(--plum);color:var(--bg)}
+.btn-gold{background:var(--gold);color:#fff}
+.btn-ghost{background:transparent;border:1px solid var(--line);color:var(--ink)}
+.btn-bad{background:transparent;border:1px solid var(--bad);color:var(--bad)}
+.btn-ok{background:var(--ok);color:#fff}
+.btn-sm{padding:6px 12px;font-size:13px;border-radius:10px}
+.btn-block{width:100%}
+.btn:disabled{opacity:.5}
+.actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px;align-items:center}
+
+.chips{display:flex;gap:8px;overflow-x:auto;padding-bottom:4px;margin:6px 0 10px}
+.chip{border:1px solid var(--line);background:var(--surface);color:var(--ink);padding:6px 14px;border-radius:999px;font-size:14px;white-space:nowrap}
+.chip[aria-pressed="true"]{background:var(--plum);color:var(--bg);border-color:var(--plum)}
+
+.grid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}
+@media (min-width:600px){.grid{grid-template-columns:repeat(3,1fr)}}
+.dcard{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);overflow:hidden;padding:0;text-align:right;color:inherit;display:flex;flex-direction:column}
+.dpic{aspect-ratio:3/4;background:linear-gradient(160deg,var(--gold-soft),var(--bg));display:grid;place-items:center;font-size:48px}
+.dpic img{width:100%;height:100%;object-fit:cover}
+.dcard .b{padding:10px 12px 12px}
+.dcard h3{margin:0;font-size:15px}
+.price{font-size:13px;color:var(--muted)} .price b{color:var(--gold)}
+.state{display:inline-block;font-size:12px;border-radius:8px;padding:0 8px;margin-top:4px;font-family:"Noto Kufi Arabic",sans-serif}
+.state.free{background:#DDF0E6;color:#1F5E43} .state.booked{background:var(--gold-soft);color:#6B4F10}
+.state.out{background:#DCE8F5;color:#2A4F7A} .state.bad{background:#F6D9DD;color:#8A2432}
+@media (prefers-color-scheme:dark){ .state.free{background:#1F3A2F;color:#9AD9BA} .state.booked{color:#EBD28F} .state.out{background:#1F3248;color:#9BC3EE} .state.bad{background:#47202A;color:#F2A9B4} }
+.fab{position:fixed;inset-inline-start:16px;bottom:calc(92px + env(safe-area-inset-bottom,0px));z-index:15;border-radius:999px;box-shadow:0 8px 20px rgba(74,29,58,.3);padding:13px 20px}
+
+.rent{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:12px;margin-bottom:12px;border-inline-start:5px solid var(--gold)}
+.rent.out{border-inline-start-color:var(--blue)} .rent.returned{border-inline-start-color:var(--ok);opacity:.85} .rent.late{border-inline-start-color:var(--bad)}
+.rhead{display:flex;gap:10px;align-items:center}
+.thumb{width:54px;height:68px;border-radius:10px;overflow:hidden;background:var(--gold-soft);display:grid;place-items:center;font-size:26px;flex:none}
+.thumb img{width:100%;height:100%;object-fit:cover}
+.rinfo{flex:1;min-width:0}
+.rinfo h3{margin:0;font-size:16px}
+.meta{color:var(--muted);font-size:14px}
+.badge{font-size:12px;border-radius:8px;padding:1px 10px;color:#fff;white-space:nowrap}
+.badge.booked{background:var(--warn)} .badge.out{background:var(--blue)} .badge.returned{background:var(--ok)}
+.dates{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin:10px 0 6px}
+.dates div{background:var(--bg);border-radius:10px;padding:6px 8px}
+.dates dt{font-size:12px;color:var(--muted);margin:0}
+.dates dd{margin:0;font-size:14px;line-height:1.4;font-weight:600}
+.dates small{display:block;font-weight:400;color:var(--muted);font-size:12px}
+.money{font-size:14px}
+.money b{color:var(--gold)}
+.disc{color:var(--bad)}
+.thumb.sm{width:36px;height:46px;font-size:18px;border-radius:8px}
+.pkg{display:flex;flex-wrap:wrap;gap:6px;margin:10px 0 2px}
+.pn{display:flex;align-items:center;gap:6px;background:var(--bg);border-radius:10px;padding:3px 10px 3px 4px;font-size:13px}
+.lbl{font-size:14px;color:var(--muted);margin-top:12px}
+.picklist{max-height:230px;overflow:auto;margin-top:4px}
+label.pick{display:flex;align-items:center;gap:10px;padding:6px 10px;border:1px solid var(--line);border-radius:12px;margin-top:6px;color:var(--ink);font-size:15px}
+label.pick input{width:auto;margin:0;flex:none}
+label.pick small{color:var(--muted)}
+
+dialog{border:none;border-radius:20px;padding:0;width:min(560px,96vw);max-height:92vh;background:var(--surface);color:var(--ink)}
+dialog::backdrop{background:rgba(30,10,25,.55)}
+.dlg{padding:18px;overflow:auto;max-height:92vh}
+.dlg h2{margin:0 0 6px;color:var(--plum);font-size:21px}
+.close{float:left;background:none;border:none;font-size:28px;color:var(--muted);line-height:1}
+label{display:block;font-size:14px;color:var(--muted);margin-top:12px}
+input,select,textarea{width:100%;font:inherit;font-size:16px;padding:10px 12px;border:1px solid var(--line);border-radius:12px;background:var(--bg);color:var(--ink);margin-top:4px}
+.row{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.row3{display:grid;grid-template-columns:1fr;gap:0}
+.msg{margin-top:10px;font-size:15px;min-height:1.4em}
+.msg.bad{color:var(--bad)} .msg.ok{color:var(--ok)}
+.preview{width:140px;aspect-ratio:3/4;border-radius:14px;overflow:hidden;background:var(--gold-soft);display:grid;place-items:center;font-size:46px;margin:10px auto 0}
+.preview img{width:100%;height:100%;object-fit:cover}
+.total{background:var(--bg);border-radius:12px;padding:8px 12px;margin-top:12px;font-size:15px}
+.total b{color:var(--gold)}
+
+.cal{border:1px solid var(--line);border-radius:14px;padding:10px;margin-top:10px}
+.cal-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:6px}
+.cal-head b{font-family:"Noto Kufi Arabic",sans-serif;font-size:15px}
+.cal-head button{background:var(--bg);border:1px solid var(--line);border-radius:8px;width:36px;height:36px;color:var(--ink)}
+.cal-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:3px;text-align:center}
+.cal-grid .wd{font-size:12px;color:var(--muted)}
+.day{aspect-ratio:1;border-radius:8px;font-size:13px;display:flex;flex-direction:column;align-items:center;justify-content:center;line-height:1.1}
+.day.busy{background:var(--busy)} .day.pick{background:var(--blue);color:#fff} .day.wed{background:var(--gold);color:#fff} .day.ret{background:var(--ok);color:#fff}
+.day.today{outline:2px solid var(--plum)}
+.day i{font-style:normal;font-size:9px}
+.legend{display:flex;flex-wrap:wrap;gap:10px;font-size:12px;color:var(--muted);margin-top:8px}
+.legend span::before{content:"";display:inline-block;width:12px;height:12px;border-radius:3px;margin-inline-end:4px;vertical-align:middle;background:var(--c)}
+
+.auth{min-height:80vh;display:grid;place-items:center;padding:20px}
+.auth-card{background:var(--surface);border:1px solid var(--line);border-radius:26px;padding:30px 22px;width:min(420px,100%);text-align:center;box-shadow:0 20px 50px rgba(74,29,58,.1)}
+.auth-card .lock{font-size:44px}
+.auth-card h2{margin:8px 0 2px;font-size:23px}
+.auth-card label{text-align:right}
+.auth-card .alt{margin-top:14px;font-size:14px;color:var(--muted)}
+.banner{background:var(--gold-soft);color:#3A2C08;border-radius:12px;padding:10px 14px;margin-bottom:12px;font-size:15px}
+.loading{text-align:center;color:var(--muted);padding:50px 0}
+@media (prefers-reduced-motion:no-preference){ dialog[open]{animation:pop .18s ease-out} @keyframes pop{from{transform:translateY(8px);opacity:0}} }
+</style>
+</head>
+<body>
+
+<!-- login -->
+<div id="login" class="hide"><div class="auth"><div class="auth-card">
+  <div class="lock">📒</div>
+  <h2 id="lTitle">دەفتەرا پەروکێت بارز</h2>
+  <p class="note" style="margin:0 0 8px">ب ئیمەیل و وشا نهێنی بچە ژوور. تەنێ تو دشێی داتایێن خۆ ببینی.</p>
+  <label>ئیمەیل<input id="lEmail" type="email" dir="ltr" autocomplete="email" placeholder="shop@example.com"></label>
+  <label>وشا نهێنی<input id="lPass" type="password" dir="ltr" autocomplete="current-password"></label>
+  <div class="msg" id="lMsg"></div>
+  <button class="btn btn-main btn-block" id="lGo">چوونا ژوور</button>
+  <div class="alt"><a href="#" id="lForgot">وشا نهێنی ژبیرکر؟</a></div>
+  <div class="alt"><a href="#" id="lToggle">هەژمارەکا نوو دروست بکە</a></div>
+</div></div></div>
+
+<!-- app shell -->
+<div id="shell" class="hide">
+  <header class="top"><h1>📒 دەفتەرا پەروکێت بارز</h1><button id="logout">دەرکەفتن</button></header>
+  <div class="wrap"><div id="errBox"></div><div id="view"><div class="loading">تێتە بارکرن…</div></div></div>
+  <button class="btn btn-gold fab hide" id="fab"></button>
+  <nav class="tabbar" role="tablist">
+    <button class="tabbtn" role="tab" data-tab="today" aria-selected="true"><span class="i">🔔</span>ئەڤرۆ<span class="cnt hide" id="cnt"></span></button>
+    <button class="tabbtn" role="tab" data-tab="dresses" aria-selected="false"><span class="i">👗</span>کراس</button>
+    <button class="tabbtn" role="tab" data-tab="rentals" aria-selected="false"><span class="i">📅</span>ئیجار</button>
+  </nav>
+</div>
+
+<!-- dialogs -->
+<dialog id="dDlg"><div class="dlg" id="dBody"></div></dialog>
+<dialog id="dfDlg"><div class="dlg" id="dfBody"></div></dialog>
+<dialog id="rfDlg"><div class="dlg" id="rfBody"></div></dialog>
+
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+import { getAuth, onAuthStateChanged, signInWithEmailAndPassword, createUserWithEmailAndPassword,
+  signOut, sendPasswordResetEmail } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+import { getFirestore, doc, setDoc, updateDoc, deleteDoc, collection, onSnapshot, serverTimestamp }
+  from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+const firebaseConfig = {
+  apiKey: "AIzaSyDF0R5sCCG-AGg-e1rbqduCsgewNTDKerY",
+  authDomain: "barz-dresses.firebaseapp.com",
+  projectId: "barz-dresses",
+  storageBucket: "barz-dresses.firebasestorage.app",
+  messagingSenderId: "936197200238",
+  appId: "1:936197200238:web:8aa274dec8a68ea4b3497f"
+};
+const fb = initializeApp(firebaseConfig);
+const auth = getAuth(fb);
+const db = getFirestore(fb);
+
+const MONTHS = ["کانوونا دووێ","شوبات","ئادار","نیسان","گولان","حزیران","تیرمەه","ئاب","ئەیلوول","چریا ئێکێ","چریا دووێ","کانوونا ئێکێ"];
+const WD = ["ئێکشەمب","دووشەمب","سێشەمب","چارشەمب","پێنجشەمب","ئینی","شەمبی"];
+const WDC = ["ش","١ش","٢ش","٣ش","٤ش","٥ش","ئ"]; // Saturday first
+const STATUS = { booked:"حجزکری", out:"هاتە برن", returned:"هاتە زڤڕاندن" };
+
+const $ = s => document.querySelector(s);
+const esc = s => String(s ?? "").replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+const pad = n => String(n).padStart(2,"0");
+const ymd = d => d.getFullYear()+"-"+pad(d.getMonth()+1)+"-"+pad(d.getDate());
+const P = s => new Date(s+"T12:00:00");
+const todayS = () => ymd(new Date());
+const addD = (s,n) => { const d = P(s); d.setDate(d.getDate()+n); return ymd(d); };
+const diff = (a,b) => Math.round((P(b)-P(a))/864e5);
+const fmt = s => { const d = P(s); return `${WD[d.getDay()]} ${d.getDate()} ${MONTHS[d.getMonth()]}${d.getFullYear()!==new Date().getFullYear()?" "+d.getFullYear():""}`; };
+const rel = s => { const n = diff(todayS(), s);
+  return n===0 ? "ئەڤرۆ" : n===1 ? "سبەی" : n===-1 ? "دوهی" : n>1 ? `پشتی ${n} رۆژان` : `${-n} رۆژ بەری نوکە`; };
+const money = n => (Number(n)||0).toLocaleString("en") + " د.ع";
+const ts = v => v?.toMillis ? v.toMillis() : 0;
+
+const S = { user:null, dresses:[], rentals:[], tab:"today", filter:"active", unsubs:[],
+  cal:{dressId:null,y:0,m:0}, openDressId:null, editDress:null, newImg:null, editRental:null };
+
+const authErr = c => ({
+  "auth/invalid-credential":"ئیمەیل یان وشا نهێنی خەلەتە.", "auth/wrong-password":"ئیمەیل یان وشا نهێنی خەلەتە.",
+  "auth/user-not-found":"ئیمەیل یان وشا نهێنی خەلەتە.", "auth/invalid-email":"ئیمەیل یا دروست نینە.",
+  "auth/email-already-in-use":"ئەڤ ئیمەیلە بەرێ هاتیە تۆمارکرن.", "auth/weak-password":"وشا نهێنی دڤێت لایەنێ کێم ٦ پیت بن.",
+  "auth/too-many-requests":"گەلەک هەوڵ هاتنە دان. پشتی کێمەکێ دووبارە بکە.", "auth/network-request-failed":"پەیوەندیا ئینتەرنێتێ نینە."
+}[c] || "کارێ سەرنەکەفت، دووبارە بکە.");
+
+/* ================= auth ================= */
+let regMode = false;
+onAuthStateChanged(auth, u => {
+  S.unsubs.forEach(f => f()); S.unsubs = [];
+  S.user = (u && !u.isAnonymous) ? u : null;
+  if (!S.user){ $("#shell").classList.add("hide"); $("#login").classList.remove("hide"); return; }
+  $("#login").classList.add("hide"); $("#shell").classList.remove("hide");
+  S.dresses = []; S.rentals = [];
+  const base = ["ledger", S.user.uid];
+  const onErr = e => {
+    $("#errBox").innerHTML = e.code === "permission-denied"
+      ? `<div class="banner">یاسایێن Firebase هێشتا بۆ دەفتەری نەهاتینە نویکرن. فایلا Rules یا نوو ل Firestore دانە و Publish بکە.</div>`
+      : `<div class="banner">بارکرنا داتایان سەرنەکەفت. ئینتەرنێتێ پشکنینە.</div>`;
+  };
+  S.unsubs.push(onSnapshot(collection(db, ...base, "dresses"), q => {
+    S.dresses = q.docs.map(d => ({id:d.id, ...d.data()})).sort((a,b) => ts(b.createdAt)-ts(a.createdAt));
+    $("#errBox").innerHTML = ""; render();
+  }, onErr));
+  S.unsubs.push(onSnapshot(collection(db, ...base, "rentals"), q => {
+    S.rentals = q.docs.map(d => ({id:d.id, ...d.data()}));
+    render();
+  }, onErr));
+});
+
+$("#lToggle").addEventListener("click", e => {
+  e.preventDefault(); regMode = !regMode;
+  $("#lTitle").textContent = regMode ? "هەژمارەکا نوو" : "دەفتەرا پەروکێت بارز";
+  $("#lGo").textContent = regMode ? "دروستکرنا هەژمارێ" : "چوونا ژوور";
+  $("#lToggle").textContent = regMode ? "هەژمار هەیە؟ چوونا ژوور" : "هەژمارەکا نوو دروست بکە";
+  $("#lPass").autocomplete = regMode ? "new-password" : "current-password";
+  $("#lMsg").textContent = "";
+});
+$("#lGo").addEventListener("click", async () => {
+  const m = $("#lMsg"); m.className = "msg";
+  const email = $("#lEmail").value.trim(), pass = $("#lPass").value;
+  if (!email || !pass){ m.classList.add("bad"); m.textContent = "ئیمەیل و وشا نهێنی بنڤیسە."; return; }
+  $("#lGo").disabled = true;
+  try{ regMode ? await createUserWithEmailAndPassword(auth, email, pass) : await signInWithEmailAndPassword(auth, email, pass); }
+  catch(e){ m.classList.add("bad"); m.textContent = authErr(e.code); }
+  finally{ $("#lGo").disabled = false; }
+});
+$("#lPass").addEventListener("keydown", e => { if (e.key==="Enter") $("#lGo").click(); });
+$("#lForgot").addEventListener("click", async e => {
+  e.preventDefault(); const m = $("#lMsg"); m.className = "msg";
+  const email = $("#lEmail").value.trim();
+  if (!email){ m.classList.add("bad"); m.textContent = "ئیمەیلا خۆ ل سەرێ بنڤیسە، پاشی ل ڤێرێ بدە."; return; }
+  try{ await sendPasswordResetEmail(auth, email); m.classList.add("ok"); m.textContent = "لینکا گوهۆڕینا وشا نهێنی بۆ ئیمەیلا تە هاتە ناردن."; }
+  catch(err){ m.classList.add("bad"); m.textContent = authErr(err.code); }
+});
+$("#logout").addEventListener("click", () => signOut(auth));
+
+/* ================= helpers ================= */
+const dressOf = id => S.dresses.find(d => d.id === id);
+const thumb = d => d && d.img ? `<img src="${esc(d.img)}" alt="" loading="lazy">` : "👗";
+const lines = r => (r.dresses && r.dresses.length) ? r.dresses : [{id:r.dressId, name:r.dressName}];
+const hasDress = (r,id) => lines(r).some(l => l.id===id);
+const namesOf = r => lines(r).map(l => l.name).join(" + ");
+
+function dressState(d){
+  const t = todayS();
+  const rs = S.rentals.filter(r => hasDress(r,d.id) && r.status!=="returned").sort((a,b) => a.from.localeCompare(b.from));
+  const out = rs.find(r => r.status==="out");
+  if (out) return out.to < t ? {cls:"bad", text:"دەمێ زڤڕاندنێ بۆری"} : {cls:"out", text:`ل دەرڤە یە هەتا ${fmt(out.to)}`};
+  if (rs.some(r => r.to < t)) return {cls:"bad", text:"دەمێ زڤڕاندنێ بۆری"};
+  const next = rs[0];
+  if (next) return {cls:"booked", text:`حجزکری: ${fmt(next.from)}`};
+  return {cls:"free", text:"بەردەستە"};
+}
+function groups(){
+  const t = todayS(), tm = addD(t,1);
+  const act = S.rentals.filter(r => r.status!=="returned");
+  const soon = r => { const a = diff(t,r.from), b = diff(t,r.to);
+    return (r.status==="booked" && a>=2 && a<=7) || (b>=2 && b<=7); };
+  return {
+    overdue: act.filter(r => r.to < t),
+    pickToday: act.filter(r => r.status==="booked" && r.from===t),
+    retToday: act.filter(r => r.to===t),
+    pickTom: act.filter(r => r.status==="booked" && r.from===tm),
+    retTom: act.filter(r => r.to===tm),
+    soon: act.filter(soon)
+  };
+}
+
+/* ================= rental card ================= */
+function rentCard(r){
+  const ls = lines(r), pack = ls.length > 1, t = todayS();
+  const total = Math.max(0, (r.price||0) - (r.discount||0));
+  const days = diff(r.from, r.to) + 1;
+  const late = r.status!=="returned" && r.to < t;
+  const nextBtn = r.status==="booked" ? `<button class="btn btn-main btn-sm" data-rst="${r.id}" data-to="out">هاتە برن ✓</button>`
+    : r.status==="out" ? `<button class="btn btn-ok btn-sm" data-rst="${r.id}" data-to="returned">هاتە زڤڕاندن ✓</button>` : "";
+  return `<article class="rent ${late?"late":r.status}">
+    <div class="rhead">
+      <div class="thumb">${pack ? "📦" : thumb(dressOf(ls[0].id))}</div>
+      <div class="rinfo"><h3>${pack ? `پاکێج: ${ls.length} کراس` : esc(ls[0].name)}</h3>
+        <div class="meta">${esc(r.customer)}${r.phone?` • <a href="tel:${esc(r.phone)}" dir="ltr">${esc(r.phone)}</a>`:""}</div></div>
+      <span class="badge ${r.status}">${STATUS[r.status]}</span>
+    </div>
+    ${pack ? `<div class="pkg">${ls.map(l => `<div class="pn"><span class="thumb sm">${thumb(dressOf(l.id))}</span>${esc(l.name)}</div>`).join("")}</div>` : ""}
+    <dl class="dates" style="margin-inline:0">
+      <div><dt>بردن</dt><dd>${fmt(r.from)}<small>${rel(r.from)}</small></dd></div>
+      <div><dt>رۆژا دەواتێ</dt><dd>${fmt(r.wedding)}<small>${rel(r.wedding)}</small></dd></div>
+      <div><dt>زڤڕاندن</dt><dd>${fmt(r.to)}<small>${rel(r.to)}</small></dd></div>
+    </dl>
+    <div class="money">${days} رۆژ • بها: <b>${money(r.price)}</b>${r.discount?` • <span class="disc">داشکاندن: ${money(r.discount)}</span> • کۆم: <b>${money(total)}</b>`:""}</div>
+    ${r.note?`<div class="note">تێبینی: ${esc(r.note)}</div>`:""}
+    <div class="actions">${nextBtn}
+      <button class="btn btn-ghost btn-sm" data-ics="${r.id}">🔔 کالێندەر</button>
+      <button class="btn btn-ghost btn-sm" data-redit="${r.id}">دەستکاری</button>
+      <button class="btn btn-bad btn-sm" data-rdel="${r.id}">ژێبرن</button></div>
+  </article>`;
+}
+
+/* ================= views ================= */
+function render(){
+  if (!S.user) return;
+  const g = groups();
+  const ids = new Set([...g.overdue,...g.pickToday,...g.retToday,...g.pickTom,...g.retTom].map(r => r.id));
+  const cnt = $("#cnt"); cnt.textContent = ids.size; cnt.classList.toggle("hide", !ids.size);
+  document.querySelectorAll(".tabbtn").forEach(b => b.setAttribute("aria-selected", b.dataset.tab===S.tab));
+  const fab = $("#fab");
+  fab.classList.toggle("hide", S.tab==="today");
+  fab.textContent = S.tab==="dresses" ? "+ کراسەکێ نوو" : "+ ئیجارەکا نوو";
+  const v = $("#view");
+  if (S.tab==="today") v.innerHTML = viewToday(g);
+  else if (S.tab==="dresses") v.innerHTML = viewDresses();
+  else v.innerHTML = viewRentals();
+  if ($("#dDlg").open) renderDress();
+}
+function section(title, cls, list){
+  return list.length ? `<div class="sect ${cls}">${title} <span class="note">(${list.length})</span></div>${list.map(rentCard).join("")}` : "";
+}
+function viewToday(g){
+  const t = todayS();
+  const any = g.overdue.length + g.pickToday.length + g.retToday.length + g.pickTom.length + g.retTom.length;
+  let h = `<div class="datebar">ئەڤرۆ: ${fmt(t)}</div>`;
+  if (!S.dresses.length && !S.rentals.length)
+    return h + `<div class="card" style="margin-top:14px;text-align:center"><p>دەفتەرا تە ڤالایە. ژ کراسەکێ دەست پێ بکە.</p><button class="btn btn-main" data-tab="dresses">زێدەکرنا کراسێ ئێکێ</button></div>`;
+  if (!any) h += `<div class="allgood">✅ چ کار بۆ ئەڤرۆ و سبەی نینە</div>`;
+  h += section("⚠️ دەمێ زڤڕاندنێ بۆری", "bad", g.overdue);
+  h += section("ئەڤرۆ دێ هێنە برن", "gold", g.pickToday);
+  h += section("ئەڤرۆ دێ زڤڕن", "gold", g.retToday.filter(r => r.to >= t));
+  h += section("سبەی دێ هێنە برن", "blue", g.pickTom);
+  h += section("سبەی دێ زڤڕن", "blue", g.retTom);
+  h += section("ل ٧ رۆژێن بەرێ", "blue", g.soon);
+  h += `<div class="card note" style="margin-top:18px">ئاگەهداری ل سەر مۆبایلێ: ل هەر ئیجارەکێ دوگمەیا <b>🔔 کالێندەر</b> بدە، دا ل کالێندەرا iPhone زێدە ببیت و ئاگەهداری بۆ تە بهێت (ئێڤارا بەری رۆژێ و سپێدا رۆژێ).</div>`;
+  return h;
+}
+function viewDresses(){
+  if (!S.dresses.length) return `<div class="allgood" style="color:var(--muted)">هێشتا چ کراس نینن.<br>دوگمەیا "+ کراسەکێ نوو" بدە.</div>`;
+  return `<div class="grid">${S.dresses.map(d => { const st = dressState(d); return `
+    <button class="dcard" data-dress="${d.id}">
+      <div class="dpic">${thumb(d)}</div>
+      <div class="b"><h3>${esc(d.name)}</h3>
+        <div class="price">ئیجار: <b>${money(d.rentPrice)}</b></div>
+        ${d.salePrice?`<div class="price">فرۆتن: <b>${money(d.salePrice)}</b></div>`:""}
+        <span class="state ${st.cls}">${esc(st.text)}</span></div>
+    </button>`; }).join("")}</div>`;
+}
+function viewRentals(){
+  const f = S.filter;
+  let list = S.rentals.slice();
+  if (f==="active") list = list.filter(r => r.status!=="returned").sort((a,b) => a.from.localeCompare(b.from));
+  else if (f==="returned") list = list.filter(r => r.status==="returned").sort((a,b) => b.from.localeCompare(a.from));
+  else list.sort((a,b) => b.from.localeCompare(a.from));
+  const chips = [["active","چالاک"],["returned","زڤڕاندی"],["all","هەمی"]]
+    .map(([k,v]) => `<button class="chip" data-filter="${k}" aria-pressed="${f===k}">${v}</button>`).join("");
+  return `<div class="chips">${chips}</div>` + (list.length ? list.map(rentCard).join("") : `<div class="allgood" style="color:var(--muted)">چ ئیجار نینن.</div>`);
+}
+
+/* ================= calendar ================= */
+function dayMap(dressId){
+  const map = {};
+  S.rentals.filter(r => hasDress(r,dressId) && r.status!=="returned").forEach(r => {
+    for (let k = r.from; k <= r.to; k = addD(k,1)) if (!map[k]) map[k] = "busy";
+    map[r.from] = "pick"; map[r.to] = "ret"; map[r.wedding] = "wed";
+  });
+  return map;
+}
+function calHtml(){
+  const {dressId, y, m} = S.cal, map = dayMap(dressId), t = todayS();
+  const lead = (new Date(y, m, 1).getDay() + 1) % 7, days = new Date(y, m+1, 0).getDate();
+  const lbl = {pick:"برن", wed:"دەوات", ret:"زڤڕ"};
+  let cells = WDC.map(w => `<div class="wd">${w}</div>`).join("") + "<div></div>".repeat(lead);
+  for (let d = 1; d <= days; d++){
+    const k = y+"-"+pad(m+1)+"-"+pad(d), st = map[k]||"";
+    cells += `<div class="day ${st} ${k===t?"today":""}">${d}${lbl[st]?`<i>${lbl[st]}</i>`:""}</div>`;
+  }
+  return `<div class="cal"><div class="cal-head"><button data-cal="-1" aria-label="مەها بەری">›</button><b>${MONTHS[m]} ${y}</b><button data-cal="1" aria-label="مەها پاشی">‹</button></div>
+    <div class="cal-grid">${cells}</div>
+    <div class="legend"><span style="--c:var(--blue)">برن</span><span style="--c:var(--gold)">دەوات</span><span style="--c:var(--ok)">زڤڕاندن</span><span style="--c:var(--busy)">ل دەرڤە یە</span></div></div>`;
+}
+
+/* ================= dress dialogs ================= */
+function openDress(id){
+  S.openDressId = id; const n = new Date(); S.cal = {dressId:id, y:n.getFullYear(), m:n.getMonth()};
+  renderDress(); if (!$("#dDlg").open) $("#dDlg").showModal();
+}
+function renderDress(){
+  const d = dressOf(S.openDressId);
+  if (!d){ $("#dDlg").close(); return; }
+  const rs = S.rentals.filter(r => hasDress(r,d.id)).sort((a,b) => (a.status==="returned") - (b.status==="returned") || a.from.localeCompare(b.from));
+  const st = dressState(d);
+  $("#dBody").innerHTML = `
+    <button class="close" data-close aria-label="داخستن">×</button>
+    <h2>${esc(d.name)}</h2>
+    ${d.img?`<div class="preview" style="width:200px"><img src="${esc(d.img)}" alt=""></div>`:""}
+    <div class="money" style="margin-top:10px">ئیجار: <b>${money(d.rentPrice)}</b>${d.salePrice?` • فرۆتن: <b>${money(d.salePrice)}</b>`:""}</div>
+    <span class="state ${st.cls}">${esc(st.text)}</span>
+    ${d.note?`<p class="note">${esc(d.note)}</p>`:""}
+    ${calHtml()}
+    <div class="actions">
+      <button class="btn btn-main" data-newrent="${d.id}">+ ئیجارەکا نوو</button>
+      <button class="btn btn-ghost" data-dedit="${d.id}">دەستکاری</button>
+      <button class="btn btn-bad" data-ddel="${d.id}">ژێبرنا کراسی</button></div>
+    <div class="sect">ئیجارێن ڤی کراسی</div>
+    ${rs.length ? rs.map(rentCard).join("") : `<p class="note">هێشتا چ ئیجار نینن.</p>`}`;
+}
+function openDressForm(id){
+  const d = id ? dressOf(id) : null; S.editDress = d; S.newImg = null;
+  $("#dfBody").innerHTML = `
+    <button class="close" data-close aria-label="داخستن">×</button>
+    <h2>${d?"دەستکاریا کراسی":"کراسەکێ نوو"}</h2>
+    <div class="preview" id="dfPrev">${d&&d.img?`<img src="${esc(d.img)}" alt="">`:"👗"}</div>
+    <label>وێنە<input id="dfImg" type="file" accept="image/*"></label>
+    <label>ناڤێ کراسی<input id="dfName" value="${esc(d?.name||"")}"></label>
+    <div class="row">
+      <label>بهایێ ئیجارێ (د.ع)<input id="dfRent" type="number" inputmode="numeric" min="0" step="1000" value="${d?.rentPrice||""}"></label>
+      <label>بهایێ فرۆتنێ (د.ع)<input id="dfSale" type="number" inputmode="numeric" min="0" step="1000" value="${d?.salePrice||""}"></label>
+    </div>
+    <label>تێبینی (دڤێت نە)<textarea id="dfNote" rows="2">${esc(d?.note||"")}</textarea></label>
+    <div class="msg" id="dfMsg"></div>
+    <div class="actions"><button class="btn btn-main" id="dfSave">پاشەکەفتکرن</button><button class="btn btn-ghost" data-close>هەلوەشاندن</button></div>`;
+  $("#dfDlg").showModal();
+}
+async function compressImage(file, max=720, q=0.72){
+  const bmp = await createImageBitmap(file);
+  const sc = Math.min(1, max / Math.max(bmp.width, bmp.height));
+  const c = document.createElement("canvas");
+  c.width = Math.round(bmp.width*sc); c.height = Math.round(bmp.height*sc);
+  c.getContext("2d").drawImage(bmp, 0, 0, c.width, c.height);
+  let url = c.toDataURL("image/jpeg", q);
+  if (url.length > 700000) url = c.toDataURL("image/jpeg", 0.5);
+  return url;
+}
+async function saveDress(){
+  const m = $("#dfMsg"); m.className = "msg";
+  const bad = t => { m.classList.add("bad"); m.textContent = t; };
+  const name = $("#dfName").value.trim(), rent = Number($("#dfRent").value)||0, sale = Number($("#dfSale").value)||0;
+  if (!name) return bad("ناڤێ کراسی بنڤیسە.");
+  if (!rent) return bad("بهایێ ئیجارێ بنڤیسە.");
+  const btn = $("#dfSave"); btn.disabled = true; m.textContent = "دهێتە پاشەکەفتکرن…";
+  try{
+    const old = S.editDress;
+    const ref = old ? doc(db,"ledger",S.user.uid,"dresses",old.id) : doc(collection(db,"ledger",S.user.uid,"dresses"));
+    await setDoc(ref, { name, rentPrice:rent, salePrice:sale, note:$("#dfNote").value.trim(),
+      img: S.newImg ?? (old?.img || ""), createdAt: old?.createdAt || serverTimestamp() });
+    $("#dfDlg").close();
+  }catch(e){ bad("پاشەکەفتکرن سەرنەکەفت، دووبارە بکە."); }
+  finally{ btn.disabled = false; }
+}
+async function delDress(id){
+  const d = dressOf(id);
+  if (!confirm(`کراسێ "${d.name}" بهێتە ژێبرن؟\nئیجارێن بەرێ یێن وی دێ مینن.`)) return;
+  try{ await deleteDoc(doc(db,"ledger",S.user.uid,"dresses",id)); $("#dDlg").close(); }
+  catch(e){ alert("ژێبرن سەرنەکەفت."); }
+}
+
+/* ================= rental dialog ================= */
+function openRentForm(dressId, rentalId){
+  if (!S.dresses.length){ alert("بەری هەر تشتەکی، کراسەکێ زێدە بکە."); return; }
+  const r = rentalId ? S.rentals.find(x => x.id===rentalId) : null; S.editRental = r;
+  const sel = new Set(r ? lines(r).map(l => l.id) : (dressId ? [dressId] : []));
+  const orphans = r ? lines(r).filter(l => !dressOf(l.id)) : [];
+  const row = (id, name, th, price) => `<label class="pick"><input type="checkbox" class="rfD" value="${esc(id)}" data-name="${esc(name)}" ${sel.has(id)?"checked":""}><span class="thumb sm">${th}</span><span>${esc(name)}${price!=null?`<small> • ${money(price)}</small>`:""}</span></label>`;
+  const rows = S.dresses.map(d => row(d.id, d.name, thumb(d), d.rentPrice)).join("") + orphans.map(l => row(l.id, l.name, "👗", null)).join("");
+  const sum = S.dresses.filter(d => sel.has(d.id)).reduce((a,d) => a + (Number(d.rentPrice)||0), 0);
+  S.priceTouched = !!r;
+  const t = todayS();
+  $("#rfBody").innerHTML = `
+    <button class="close" data-close aria-label="داخستن">×</button>
+    <h2>${r?"دەستکاریا ئیجارێ":"ئیجارەکا نوو"}</h2>
+    <div class="lbl">کراس (دشێی چەند کراسان ب پاکێجەکێ هەلبژێری)</div>
+    <div class="picklist">${rows}</div>
+    <div class="row">
+      <label>ناڤێ کەسی<input id="rfName" value="${esc(r?.customer||"")}" autocomplete="off"></label>
+      <label>ژمارا تەلەفۆنێ<input id="rfPhone" inputmode="tel" dir="ltr" value="${esc(r?.phone||"")}"></label>
+    </div>
+    <label>رۆژا بردنێ<input id="rfFrom" type="date" value="${r?.from||t}"></label>
+    <label>رۆژا دەواتێ<input id="rfWed" type="date" value="${r?.wedding||""}"></label>
+    <label>رۆژا زڤڕاندنێ<input id="rfTo" type="date" value="${r?.to||""}"></label>
+    <div class="row">
+      <label>بهایێ ئیجارێ یێ هەمیان (د.ع)<input id="rfPrice" type="number" inputmode="numeric" min="0" step="1000" value="${r ? (r.price ?? "") : (sum || "")}"></label>
+      <label>داشکاندن (د.ع)<input id="rfDisc" type="number" inputmode="numeric" min="0" step="1000" value="${r?.discount||""}"></label>
+    </div>
+    <div class="total" id="rfTotal"></div>
+    <label>تێبینی (دڤێت نە)<textarea id="rfNote" rows="2">${esc(r?.note||"")}</textarea></label>
+    <div class="msg" id="rfMsg"></div>
+    <div class="actions"><button class="btn btn-main" id="rfSave">پاشەکەفتکرن</button><button class="btn btn-ghost" data-close>هەلوەشاندن</button></div>`;
+  calcTotal(); $("#rfDlg").showModal();
+}
+function calcTotal(){
+  const p = Number($("#rfPrice")?.value)||0, d = Number($("#rfDisc")?.value)||0;
+  const el = $("#rfTotal"); if (!el) return;
+  const n = document.querySelectorAll(".rfD:checked").length;
+  el.innerHTML = `${n} کراس • بهایێ دوماهیێ: <b>${money(Math.max(0, p-d))}</b>`;
+}
+async function saveRental(){
+  const m = $("#rfMsg"); m.className = "msg";
+  const bad = t => { m.classList.add("bad"); m.textContent = t; };
+  const dresses = [...document.querySelectorAll(".rfD:checked")].map(c => ({id:c.value, name: dressOf(c.value)?.name || c.dataset.name || ""}));
+  const customer = $("#rfName").value.trim(), phone = $("#rfPhone").value.trim();
+  const from = $("#rfFrom").value, wedding = $("#rfWed").value, to = $("#rfTo").value;
+  const price = Number($("#rfPrice").value)||0, discount = Number($("#rfDisc").value)||0;
+  if (!dresses.length) return bad("لایەنێ کێم ئێک کراسی هەلبژێرە.");
+  if (!customer) return bad("ناڤێ کەسی بنڤیسە.");
+  if (!from || !wedding || !to) return bad("رۆژا بردنێ، رۆژا دەواتێ و رۆژا زڤڕاندنێ هەلبژێرە.");
+  if (!(from <= wedding && wedding <= to)) return bad("رێزبەندیا رۆژان دڤێت ئەڤە بیت: بردن ← دەوات ← زڤڕاندن.");
+  if (!price) return bad("بهایێ ئیجارێ بنڤیسە.");
+  if (discount > price) return bad("داشکاندن نابیت ژ بهای مەزنتر بیت.");
+  const old = S.editRental;
+  for (const dd of dresses){
+    const clash = S.rentals.find(r => hasDress(r, dd.id) && r.id!==old?.id && r.status!=="returned" && r.from <= to && from <= r.to);
+    if (clash) return bad(`کراسێ "${dd.name}" د ڤان رۆژان دا ل دەرڤە یە: ${fmt(clash.from)} ← ${fmt(clash.to)} (${clash.customer}).`);
+  }
+  const btn = $("#rfSave"); btn.disabled = true; m.textContent = "دهێتە پاشەکەفتکرن…";
+  try{
+    const ref = old ? doc(db,"ledger",S.user.uid,"rentals",old.id) : doc(collection(db,"ledger",S.user.uid,"rentals"));
+    await setDoc(ref, { dressId:dresses[0].id, dressName:dresses.map(x => x.name).join(" + "), dresses,
+      customer, phone, from, wedding, to, price, discount,
+      note:$("#rfNote").value.trim(), status: old?.status || "booked", createdAt: old?.createdAt || serverTimestamp() });
+    $("#rfDlg").close();
+  }catch(e){ bad("پاشەکەفتکرن سەرنەکەفت، دووبارە بکە."); }
+  finally{ btn.disabled = false; }
+}
+async function setStatus(id, status){
+  try{ await updateDoc(doc(db,"ledger",S.user.uid,"rentals",id), {status}); }
+  catch(e){ alert("گوهۆڕین سەرنەکەفت، دووبارە بکە."); }
+}
+async function delRental(id){
+  const r = S.rentals.find(x => x.id===id);
+  if (!confirm(`ئیجارا "${r.customer}" بۆ "${namesOf(r)}" بهێتە ژێبرن؟`)) return;
+  try{ await deleteDoc(doc(db,"ledger",S.user.uid,"rentals",id)); }
+  catch(e){ alert("ژێبرن سەرنەکەفت."); }
+}
+
+/* ================= calendar file (.ics) for phone reminders ================= */
+function downloadIcs(id){
+  const r = S.rentals.find(x => x.id===id); if (!r) return;
+  const e = s => String(s).replace(/([,;\\])/g,"\\$1").replace(/\n/g," ");
+  const stamp = new Date().toISOString().replace(/[-:]/g,"").replace(/\.\d+/,"");
+  const evs = [["pick","بردنا کراسی",r.from],["wed","دەوات",r.wedding],["ret","زڤڕاندنا کراسی",r.to]];
+  const L = ["BEGIN:VCALENDAR","VERSION:2.0","PRODID:-//Barz Dresses//Ledger//KU","CALSCALE:GREGORIAN"];
+  evs.forEach(([k,label,d]) => {
+    L.push("BEGIN:VEVENT", `UID:${r.id}-${k}@barz-dresses`, `DTSTAMP:${stamp}`,
+      `DTSTART;VALUE=DATE:${d.replace(/-/g,"")}`, `DTEND;VALUE=DATE:${addD(d,1).replace(/-/g,"")}`,
+      `SUMMARY:${e(label+": "+namesOf(r)+" — "+r.customer)}`,
+      `DESCRIPTION:${e((r.phone?"تەلەفۆن: "+r.phone+". ":"")+"کۆم: "+Math.max(0,(r.price||0)-(r.discount||0))+" د.ع")}`,
+      "BEGIN:VALARM","ACTION:DISPLAY",`DESCRIPTION:${e(label+": "+namesOf(r))}`,"TRIGGER;RELATED=START:-PT6H","END:VALARM",
+      "BEGIN:VALARM","ACTION:DISPLAY",`DESCRIPTION:${e(label+": "+namesOf(r))}`,"TRIGGER;RELATED=START:PT9H","END:VALARM",
+      "END:VEVENT");
+  });
+  L.push("END:VCALENDAR");
+  const blob = new Blob([L.join("\r\n")], {type:"text/calendar;charset=utf-8"});
+  const url = URL.createObjectURL(blob), a = document.createElement("a");
+  a.href = url; a.download = "ijar-barz.ics"; document.body.appendChild(a); a.click(); a.remove();
+  setTimeout(() => URL.revokeObjectURL(url), 5000);
+}
+
+/* ================= events ================= */
+document.addEventListener("click", e => {
+  const t = e.target.closest("button,[data-close]"); if (!t) return;
+  if (t.hasAttribute("data-close")) return t.closest("dialog").close();
+  if (t.dataset.tab){ S.tab = t.dataset.tab; render(); window.scrollTo({top:0}); return; }
+  if (t.id==="fab"){ S.tab==="dresses" ? openDressForm(null) : openRentForm(null, null); return; }
+  if (t.dataset.filter){ S.filter = t.dataset.filter; render(); return; }
+  if (t.dataset.dress) return openDress(t.dataset.dress);
+  if (t.dataset.cal){
+    S.cal.m += Number(t.dataset.cal);
+    if (S.cal.m < 0){ S.cal.m = 11; S.cal.y--; } if (S.cal.m > 11){ S.cal.m = 0; S.cal.y++; }
+    return renderDress();
+  }
+  if (t.dataset.newrent) return openRentForm(t.dataset.newrent, null);
+  if (t.dataset.dedit) return openDressForm(t.dataset.dedit);
+  if (t.dataset.ddel) return delDress(t.dataset.ddel);
+  if (t.dataset.redit) return openRentForm(null, t.dataset.redit);
+  if (t.dataset.rdel) return delRental(t.dataset.rdel);
+  if (t.dataset.rst) return setStatus(t.dataset.rst, t.dataset.to);
+  if (t.dataset.ics) return downloadIcs(t.dataset.ics);
+  if (t.id==="dfSave") return saveDress();
+  if (t.id==="rfSave") return saveRental();
+});
+document.addEventListener("input", e => {
+  if (e.target.id==="rfPrice") S.priceTouched = true;
+  if (e.target.id==="rfPrice" || e.target.id==="rfDisc") calcTotal();
+});
+document.addEventListener("change", async e => {
+  if (e.target.id==="dfImg"){
+    const f = e.target.files[0]; if (!f) return;
+    try{ S.newImg = await compressImage(f); $("#dfPrev").innerHTML = `<img src="${S.newImg}" alt="">`; }
+    catch(err){ $("#dfMsg").className = "msg bad"; $("#dfMsg").textContent = "وێنە نەهاتە خواندن. وێنەیەکا دی تاقی بکە."; }
+  }
+  if (e.target.classList && e.target.classList.contains("rfD")){
+    if (!S.priceTouched){
+      const sum = [...document.querySelectorAll(".rfD:checked")].reduce((a,c) => a + (Number(dressOf(c.value)?.rentPrice)||0), 0);
+      $("#rfPrice").value = sum || "";
+    }
+    calcTotal();
+  }
+});
+</script>
+</body>
+</html>
